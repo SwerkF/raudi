@@ -19,6 +19,7 @@ const User = sequelize.define('user', {
     },
     email: {
         type: Sequelize.STRING,
+        unique: true,
         allowNull: false
     },
     password:{
@@ -27,19 +28,19 @@ const User = sequelize.define('user', {
     },
     adresse: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: true
     },
     code_postal: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: true
     },
     ville: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: true
     },
     telephone: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: true
     },
 });
 

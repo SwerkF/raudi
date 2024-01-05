@@ -1,11 +1,12 @@
 const jwt = require('jsonwebtoken');
 const connection = require('../database/database');
+require('dotenv').config();
 
 exports.checkToken = (req, res, next) => {
     // Récupération du bearer token
     const token = req.headers.authorization.split(" ")[1];
     // Vérification du token
-    jwt.verify(token, process.env.TOKENSECRET, (err, decodedToken) => {
+    jwt.verify(token, process.env.SECRETKEY, (err, decodedToken) => {
         if (err) {
             res.status(401).json({ flash: "Invalid token !" });
         } else {

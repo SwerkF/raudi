@@ -23,6 +23,7 @@ app.use('/api/options', optionsRoute);
 app.use('/api/vehicule', vehiculeRoute);
 app.use('/api/modele', modeleRoute);
 
+app.use('/images', express.static('src'));
 
 app.listen(3000, () => {
     console.log('Server started on port 3000');
