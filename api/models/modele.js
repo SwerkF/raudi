@@ -41,6 +41,10 @@ const Modele = sequelize.define('modele', {
         type: Sequelize.INTEGER,
         allowNull: false
     },
+    couleur: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
 
 });
 
