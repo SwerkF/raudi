@@ -18,6 +18,7 @@ app.use(bodyParser.json());
 
 
 app.use('/api/database', databaseRoutes);
+app.use('/api/user', userRoute);
 
 app.listen(3000, () => {
     console.log('Server started on port 3000');
