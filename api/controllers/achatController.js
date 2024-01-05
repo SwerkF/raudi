@@ -1,4 +1,8 @@
 const Achat = require('../models/achat'); // Assurez-vous que le chemin est correct
+const Vehicule = require('../models/vehicule');
+const Modele = require('../models/modele');
+const options = require('../models/options');
+
 
 exports.createAchat = async (req, res) => {
     try {
@@ -11,7 +15,22 @@ exports.createAchat = async (req, res) => {
 
 exports.getAllAchats = async (req, res) => {
     try {
-        const achats = await Achat.findAll();
+        // get all achats with vehicule and modele and option
+        const achats = await Achat.findAll({
+            include: [
+                {
+                    model: Vehicule,
+                    include: [
+                        {
+                            model: options,
+                        },
+                        {
+                            model: Modele,
+                        },
+                    ],
+                },
+            ],
+        });
         res.json(achats);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -20,11 +39,21 @@ exports.getAllAchats = async (req, res) => {
 
 exports.getAchatById = async (req, res) => {
     try {
-        const achat = await Achat.findByPk(req.params.achatId);
-        if (!achat) {
-            return res.status(404).json({ error: 'Achat non trouvé' });
-        }
-        res.json(achat);
+const achat = await Achat.findByPk(req.params.achatId, {
+                    include: [
+                        {
+                            model: Vehicule,
+                            include: [
+                                {
+                                    model: Modele,
+                                    model: options,
+                                },
+                            ],
+                        },
+                    ],
+                });
+                res.json(achat);
+
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
