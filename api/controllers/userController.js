@@ -1,8 +1,7 @@
 const db = require('../database/database');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-
-
+const User = require('../models/user'); // Assurez-vous que le chemin est correct
 exports.register = async (req, res, next) => {
     try {
         const { nom, prenom, email, motdepasse, adresse, ville, cp, role_id } = req.body;
@@ -64,5 +63,49 @@ exports.login = async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Erreur serveur" });
+    }
+};
+
+exports.getAllUsers = async (req, res) => {
+    try {
+        const users = await User.findAll();
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+exports.getUserById = async (req, res) => {
+    try {
+        const user = await User.findByPk(req.params.userId);
+        if (!user) {
+            return res.status(404).json({ error: 'Utilisateur non trouvé' });
+        }
+        res.json(user);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+exports.updateUser = async (req, res) => {
+    try {
+        const user = await User.findByPk(req.params.userId);
+        if (!user) {
+            return res.status(404).json({ error: 'Utilisateur non trouvé' });
+        }
+        await user.update(req.body);
+        res.json(user);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+exports.deleteUser = async (req, res) => {
+    try {
+        const user = await User.findByPk(req.params.userId);
+        if (!user) {
+            return res.status(404).json({ error: 'Utilisateur non trouvé' });
+        }
+        await user.destroy();
+        res.status(204).send();
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 };
