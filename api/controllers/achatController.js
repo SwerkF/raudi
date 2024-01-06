@@ -76,7 +76,7 @@ exports.getAllAchats = async (req, res) => {
                     model: Vehicule,
                     include: [
                         {
-                            model: options,
+                            model: Options,
                         },
                         {
                             model: Modele,

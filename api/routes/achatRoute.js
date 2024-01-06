@@ -1,10 +1,11 @@
 const express = require('express');
 const achatController = require('../controllers/achatController');
 const router = express.Router();
+const middleware = require('../middlewares/middleware');
 
-router.post('/', achatController.createAchat);
-router.get('/', achatController.getAllAchats);
-router.get('/:achatId', achatController.getAchatById);
-router.delete('/:achatId', achatController.deleteAchat);
+router.post('/', middleware.checkToken, achatController.createAchat);
+router.get('/', middleware.isAdminOrComptable, achatController.getAllAchats);
+router.get('/:achatId', middleware.checkToken, achatController.getAchatById);
+router.delete('/:achatId', middleware.isAdminOrComptable, achatController.deleteAchat);
 
 module.exports = router;

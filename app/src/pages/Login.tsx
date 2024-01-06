@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -7,6 +7,28 @@ function Login() {
     const navigate = useNavigate();
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if(token) {
+            axios.get("http://localhost:3000/api/user/me", {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+                .then((response) => {
+                    if(response.status === 200) {
+                        navigate("/");
+                    } else {
+                        localStorage.removeItem("token");
+                    }
+                })
+                .catch((err) => {
+                    localStorage.removeItem("token");
+                })
+                
+        }
+    }, []);
 
     const handleEmailChange = (event: any) => {
         setEmail(event.target.value);
@@ -25,7 +47,7 @@ function Login() {
             .then((response) => {
                 if(response.status === 200) {
                     localStorage.setItem("token", response.data.token);
-                    navigate("/");
+                    window.location.href = "/";
                 }
             })
     }

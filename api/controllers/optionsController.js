@@ -30,6 +30,19 @@ exports.getOptionById = async (req, res) => {
     }
 };
 
+exports.updateOption = async (req, res) => {
+    try {
+        const option = await Options.findByPk(req.params.optionId);
+        if (!option) {
+            return res.status(404).json({ error: 'Option non trouvée' });
+        }
+        await option.update(req.body);
+        res.json(option);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
 exports.deleteOption = async (req, res) => {
     try {
         const option = await Options.findByPk(req.params.optionId);

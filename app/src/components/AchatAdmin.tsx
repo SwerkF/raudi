@@ -28,7 +28,11 @@ const AchatsUtilisateurs: React.FC = () => {
   const [mois, setMois] = useState<string>('');
   useEffect(() => {
     let isMounted = true; 
-    axios.get<Achat[]>('http://localhost:3000/api/achat')
+    axios.get<Achat[]>('http://localhost:3000/api/achat', {
+      headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    })
       .then(res => {
         if (isMounted) { 
           setAchats(res.data);
@@ -114,7 +118,7 @@ console.log(achats);
   <tbody>
   {achatsFiltres.map(achat => (
 
-    <tr>
+    <tr key={achat.id}>
       <th> {achat.id}</th>
       <td>{dateFormat(achat.date_achat)}</td>
       <td>{achat.vehicule.modele.nom}</td>

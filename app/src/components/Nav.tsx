@@ -36,6 +36,11 @@ function Nav() {
     const handleRedirect = (menu: string) => {
         navigate(menu);
     }
+
+    const handleDisconnect = () => {
+        localStorage.removeItem("token");
+        window.location.href = "/";
+    }
     
     return (
         <>
@@ -54,7 +59,7 @@ function Nav() {
                                     <li className="nav-item" onClick={() => handleRedirect("/profile")}>
                                         <button className="nav-link">Profile</button>
                                     </li>
-                                    <li className="nav-item" onClick={() => handleRedirect("/logout")}>
+                                    <li className="nav-item" onClick={() => handleDisconnect()}>
                                         <button className="nav-link">Logout</button>
                                     </li>
                                     {

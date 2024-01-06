@@ -21,7 +21,6 @@ function Customise() {
         axios.get(`http://localhost:3000/api/modele/${id}`)
             .then((response) => {
                 setModele(response.data);
-                console.log(response.data);
                 setTotal(response.data.prix);
                 axios.get(`http://localhost:3000/api/options`)
                     .then((response) => {
@@ -93,7 +92,10 @@ function Customise() {
             }
         })
             .then((response) => {
-                console.log(response.data);
+                if(response.status === 200) {
+                    alert("Votre commande a bien été prise en compte");
+                    window.location.href = "/";
+                }
             })
     }
 
