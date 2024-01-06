@@ -7,7 +7,7 @@ function Nav() {
     
     const navigate = useNavigate();
 
-    const [user, setUser] = useState<any>([]);
+    const [user, setUser] = useState<any>(null);
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -18,7 +18,14 @@ function Nav() {
                 }
             })
                 .then((response) => {
-                    setUser(response.data.user);
+                    if(response.status === 200) {
+                        setUser(response.data.user);
+                    } else {
+                        localStorage.removeItem("token");
+                    }
+                })
+                .catch((err) => {
+                    localStorage.removeItem("token");
                 })
                 
         } else {

@@ -60,7 +60,7 @@ exports.login = async (req, res, next) => {
         // Créer un token
         const token = jwt.sign(
             { email: user.email },
-            Process.env.SECRETKEY,
+            process.env.SECRETKEY,
             { expiresIn: '24h' }
         );
         // Envoyer la réponse
