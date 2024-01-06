@@ -1,68 +1,75 @@
-const db = require('../database/database');
+const data = require('../database/database');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = require('../models/user'); // Assurez-vous que le chemin est correct
+const User = require('../models/user');
+const Role = require('../models/role');
+require('dotenv').config();
+
 exports.register = async (req, res, next) => {
     try {
-        const { nom, prenom, email, motdepasse, adresse, ville, cp, role_id } = req.body;
-        if (!nom || !prenom || !email || !motdepasse) {
-            return res.status(400).json({ error: "Données manquantes" });
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        // vérifier si l'utilisateur existe déjà
+        user = await User.findOne({ where: { email: req.body.email } });
+        if (user) {
+            console.log('L\'utilisateur existe déjà');
+            return res.status(401).json({ error: 'L\'utilisateur existe déjà' });
+        
         }
 
-        // Vérifier si l'utilisateur existe déjà
-        const result = await db.query('SELECT * FROM user WHERE email = ?', [email]);
-        if (result.length > 0) {
-            return res.status(409).json({ error: "Utilisateur déjà existant" });
-        }
+        // Créer un nouvel utilisateur avec le role 1 (User)
+        const newUser = await User.create({
+            nom: req.body.nom,
+            prenom: req.body.prenom,
+            email: req.body.email,
+            password: hashedPassword,
+            role_id: 1
+        });
 
-        // Hasher le mot de passe
-        const hashMDP = await bcrypt.hash(motdepasse, 10);
+        // Créer un token
+        const token = jwt.sign(
+            { email: newUser.email },
+            process.env.SECRETKEY,
+            { expiresIn: '24h' }
+        );
 
-        // Insérer l'utilisateur dans la base de données
-        await db.query("INSERT INTO user (nom, prenom, email, motdepasse, adresse, ville, cp, role_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [nom, prenom, email, hashMDP, adresse, ville, cp, role_id]);
-        // Générer un token JWT
-        const token = jwt.sign({ email }, process.env.SECRET_KEY, { expiresIn: '1h' });
-        res.json({ token });
-        next();
+        // Envoyer la réponse
+        res.status(200).json({
+            userId: newUser.id,
+            token: token
+        });
+
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Erreur serveur" });
+        res.status(500).json({ error: error.message });
     }
-};
+}
 
-
-exports.login = async (req, res) => {
+exports.login = async (req, res, next) => {
     try {
-        // Récupérer email et mot de passe depuis req.body
-        const { email, motdepasse } = req.body;
-
-        // Vérifier si l'utilisateur existe
-        const result = await db.query('SELECT * FROM user WHERE email = ?', [email]);
-        if (result.length === 0) {
-            return res.status(401).json({ error: "Utilisateur non existant" });
+        // vérifier si l'utilisateur existe déjà
+        const user = await User.findOne({ where: { email: req.body.email } });
+        if (!user) {
+            console.log('Utilisateur non trouvé');
+            return res.status(401).json({ error: 'Utilisateur non trouvé' });
         }
-
-        const user = result[0];
-
-        // Comparer le mot de passe fourni avec celui en base de données
-        const isPasswordCorrect = await bcrypt.compare(motdepasse, user.motdepasse);
-        if (!isPasswordCorrect) {
-            return res.status(401).json({ error: "Mot de passe incorrect" });
+        // Vérifier si le mot de passe est correct
+        const valid = await bcrypt.compare(req.body.password, user.password);
+        if (!valid) {
+            console.log('Mot de passe incorrect');
+            return res.status(401).json({ error: 'Mot de passe incorrect' });
         }
-
-        // Générer un token JWT
-        const token = jwt.sign({ email }, process.env.SECRET_KEY, { expiresIn: '1h' });
-
-        if (user.role === "admin") {
-            const allUsers = await db.query('SELECT * FROM user');
-            res.json({ token, users: allUsers });
-        } else {
-            res.json({ token });
-        }
-
+        // Créer un token
+        const token = jwt.sign(
+            { email: user.email },
+            process.env.SECRETKEY,
+            { expiresIn: '24h' }
+        );
+        // Envoyer la réponse
+        res.status(200).json({
+            userId: user.id,
+            token: token
+        });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Erreur serveur" });
+        res.status(500).json({ error: error.message });
     }
 };
 
@@ -109,3 +116,29 @@ exports.deleteUser = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+exports.verifyConnection = async (req, res) => {
+    try {
+        const token = req.headers.authorization.split(' ')[1];
+        const decodedToken = jwt.verify(token, process.env.SECRETKEY);
+        const email = decodedToken.email;
+
+        const user = await User.findOne({
+            where: { email: email },
+            include: [{
+                model: Role,
+                attributes: ['id', 'nom'] // You can specify the attributes you want to include for the role
+            }]
+        });
+
+        if (!user) {
+            return res.status(401).json({ error: 'Utilisateur non trouvé' });
+        }
+
+        res.status(200).json({
+            user: user
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
