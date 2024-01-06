@@ -81,6 +81,7 @@ exports.getAllUsers = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
 exports.getUserById = async (req, res) => {
     try {
         const user = await User.findByPk(req.params.userId);
@@ -92,6 +93,7 @@ exports.getUserById = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
 exports.updateUser = async (req, res) => {
     try {
         const user = await User.findByPk(req.params.userId);
@@ -104,6 +106,7 @@ exports.updateUser = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
 exports.deleteUser = async (req, res) => {
     try {
         const user = await User.findByPk(req.params.userId);
