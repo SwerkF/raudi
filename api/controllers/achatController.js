@@ -5,31 +5,9 @@ const Options = require('../models/options');
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 
+
 exports.createAchat = async (req, res) => {
     const token = req.headers.authorization.split(" ")[1];
-    /*
-    modele_id: '1',
-  options: [
-    {
-      id: 2,
-      nom: 'Climatisation',
-      prix: 2500,
-      createdAt: '2024-01-05T14:07:49.000Z',
-      updatedAt: '2024-01-05T14:07:49.000Z'
-    },
-    {
-      id: 1,
-      nom: 'Siège chauffant',
-      prix: 500,
-      createdAt: '2024-01-05T14:07:49.000Z',
-      updatedAt: '2024-01-05T14:07:49.000Z'
-    }
-  ],
-  adresse: 'fefef',
-  cp: 'efef',
-  ville: 'efef',
-  tel: 'efefef'
-  */
 
   // Check if model exists in the database
     const modele = await Modele.findByPk(req.body.modele_id);
@@ -91,7 +69,22 @@ exports.createAchat = async (req, res) => {
 
 exports.getAllAchats = async (req, res) => {
     try {
-        const achats = await Achat.findAll();
+        // get all achats with vehicule and modele and option
+        const achats = await Achat.findAll({
+            include: [
+                {
+                    model: Vehicule,
+                    include: [
+                        {
+                            model: options,
+                        },
+                        {
+                            model: Modele,
+                        },
+                    ],
+                },
+            ],
+        });
         res.json(achats);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -100,11 +93,21 @@ exports.getAllAchats = async (req, res) => {
 
 exports.getAchatById = async (req, res) => {
     try {
-        const achat = await Achat.findByPk(req.params.achatId);
-        if (!achat) {
-            return res.status(404).json({ error: 'Achat non trouvé' });
-        }
-        res.json(achat);
+const achat = await Achat.findByPk(req.params.achatId, {
+                    include: [
+                        {
+                            model: Vehicule,
+                            include: [
+                                {
+                                    model: Modele,
+                                    model: options,
+                                },
+                            ],
+                        },
+                    ],
+                });
+                res.json(achat);
+
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
