@@ -6,6 +6,7 @@ import AchatsParMoisChart from '../components/AchatsParMoisChart';
 import AchatsUtilisateurs from '../components/AchatAdmin';
 import MoteursAdmin from '../components/MoteurAdmin';
 import OptionsAdmin from '../components/OptionsAdmin';
+import AdminModele from '../components/AdminModele'
 
 const Admin = () => {
 
@@ -26,7 +27,7 @@ const Admin = () => {
           window.location.href = '/';
         } else {
           setUser(res.data.user);
-          setComponents('AchatsUtilisateurs');
+          setComponents('ModeleAdmin');
         }
       })
       .catch(err => {
@@ -48,6 +49,7 @@ const Admin = () => {
               {
                 user && user.role.nom === 'Admin' ? (
                   <>
+                    <option value="ModeleAdmin">Modele</option>
                     <option value="AchatsUtilisateurs">Achats Utilisateurs</option>
                     <option value="MoteursAdmin">Moteurs</option>
                     <option value="OptionsAdmin">Options</option>
@@ -68,6 +70,7 @@ const Admin = () => {
           // if user role is admin,  display all options, else display AchatAdmin or AchatsParMoisChart
             user && user.role.nom === 'Admin' ? (
               components === 'AchatsUtilisateurs' ? <AchatsUtilisateurs /> 
+              : components === 'ModeleAdmin' ? <AdminModele />
               : components === 'MoteursAdmin' ? <MoteursAdmin /> 
               : components === 'OptionsAdmin' ? <OptionsAdmin />
               : components === 'AchatsParMoisChart' ? <AchatsParMoisChart />

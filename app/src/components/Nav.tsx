@@ -20,6 +20,7 @@ function Nav() {
                 .then((response) => {
                     if(response.status === 200) {
                         setUser(response.data.user);
+                        console.log(response.data.user)
                     } else {
                         localStorage.removeItem("token");
                     }
@@ -44,44 +45,57 @@ function Nav() {
     
     return (
         <>
-            <nav className="navbar navbar-expand-lg navbar-light bg-light">
+            <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
                 <div className="container-fluid">
-                    <button onClick={() => handleRedirect("/")} className="navbar-brand">Logo</button>
-                    <div className="collapse navbar-collapse" id="navbarNav">
-                        <ul className="navbar-nav">
-                            <li className="nav-item" onClick={() => handleRedirect("/")}>
-                                <button className="nav-link active" aria-current="page">Home</button>
-                            </li>   
+                    <a className="navbar-brand" href="/">Car Configurator</a>
+                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" 
+                        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                        <span className="navbar-toggler-icon"></span>
+                    </button>
+                    
+                    <div className="collapse navbar-collapse" id="navbarNavDropdown">
+                        <ul className="navbar-nav me-auto">
+                            <li className="nav-item">
+                                <a className="nav-link" aria-current="page" href="/">Accueil</a>
+                            </li>
+                            <li className="nav-item">
+                                <a className="nav-link" href="/modeles">Modeles</a>
+                            </li>
                         </ul>
-                        <ul className="navbar-nav ms-auto">
-                            {user ? (
-                                <>
-                                    <li className="nav-item" onClick={() => handleRedirect("/profile")}>
-                                        <button className="nav-link">Profile</button>
-                                    </li>
-                                    <li className="nav-item" onClick={() => handleDisconnect()}>
-                                        <button className="nav-link">Logout</button>
-                                    </li>
-                                    {
-                                        user.role && user.role.nom == "Admin" ? (
-                                            <li className="nav-item" onClick={() => handleRedirect("/admin")}>
-                                                <button className="nav-link">Admin</button>
-                                            </li>
-                                        ) : (
-                                            <></>
-                                        )
-                                    }
-                                </>
-                            ) : (
-                                <>
-                                    <li className="nav-item" onClick={() => handleRedirect("/login")}>
-                                        <button className="nav-link">Login</button>
-                                    </li>
-                                    <li className="nav-item" onClick={() => handleRedirect("/register")}>
-                                        <button className="nav-link">Register</button>
-                                    </li>
-                                </>
-                            )}
+                        <ul className="navbar-nav">
+                            {   
+                                user && user.role && user.role !== "User" ? (
+                                    <>
+                                        <li className="nav-item">
+                                            <a className="nav-link" href="/admin">Administration</a>
+                                        </li>
+                                    </>
+                                ) : (
+                                    <>
+                                    </>
+                                )
+                            }
+                            {
+                                user ? (
+                                    <>
+                                        <li className="nav-item">
+                                            <a className="nav-link" href="/profil">Profil</a>
+                                        </li>
+                                        <li className="nav-item">
+                                            <a className="nav-link" href="#" onClick={handleDisconnect}>Déconnexion</a>
+                                        </li>
+                                    </>
+                                ) : (
+                                    <>
+                                        <li className="nav-item">
+                                            <a className="nav-link" href="/login">Connexion</a>
+                                        </li>
+                                        <li className="nav-item">
+                                            <a className="nav-link" href="/register">Inscription</a>
+                                        </li>
+                                    </>
+                                )
+                            }
                         </ul>
                     </div>
                 </div>
