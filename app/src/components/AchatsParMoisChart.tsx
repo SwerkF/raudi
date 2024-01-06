@@ -25,7 +25,11 @@ const AchatsParMoisChart: React.FC = () => {
 
     // Charger les achats existants
     useEffect(() => {
-        axios.get<Achat[]>('http://localhost:3000/api/achat')
+        axios.get<Achat[]>('http://localhost:3000/api/achat', {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        })
             .then(res => {
                 setAchats(res.data);
                 setupChartData(res.data);
@@ -37,6 +41,7 @@ const AchatsParMoisChart: React.FC = () => {
         const achatParMois: { [key: string]: number } = {};
 
         // Traiter les achats pour obtenir le total par mois
+        console.log(achats)
         achats.forEach(achat => {
             const mois = new Date(achat.date_achat).toLocaleString('default', { month: 'short', year: 'numeric' });
             achatParMois[mois] = (achatParMois[mois] || 0) + achat.prix;

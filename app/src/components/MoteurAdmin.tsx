@@ -15,7 +15,11 @@ const MoteursAdmin: React.FC = () => {
     const [nouvellePuissance, setNouvellePuissance] = useState(0);
 
     useEffect(() => {
-        axios.get<Moteur[]>('http://localhost:3000/api/moteurs')
+        axios.get<Moteur[]>('http://localhost:3000/api/moteurs', {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        })
             .then(res => setMoteurs(res.data))
             .catch(err => console.error(err));
     }, []);
@@ -24,7 +28,11 @@ const MoteursAdmin: React.FC = () => {
         e.preventDefault();
         const nouveauMoteur = { type: nouveauType, puissance: nouvellePuissance };
         
-        axios.post('http://localhost:3000/api/moteurs', nouveauMoteur)
+        axios.post('http://localhost:3000/api/moteurs', nouveauMoteur, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        })
             .then(res => {
                 setMoteurs([...moteurs, res.data]);
                 setNouveauType('');
@@ -42,6 +50,7 @@ const MoteursAdmin: React.FC = () => {
                         <th>ID</th>
                         <th>Type</th>
                         <th>Puissance</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -50,6 +59,9 @@ const MoteursAdmin: React.FC = () => {
                             <td>{moteur.id}</td>
                             <td>{moteur.type}</td>
                             <td>{moteur.puissance} CV</td>
+                            <td>
+                                <button className="btn btn-danger" onClick={() => {}}>Supprimer</button>
+                            </td>
                         </tr>
                     ))}
                 </tbody>

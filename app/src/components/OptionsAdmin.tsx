@@ -14,7 +14,11 @@ const OptionsAdmin: React.FC = () => {
 
     // Charger les options existantes
     useEffect(() => {
-        axios.get<Option[]>('http://localhost:3000/api/options')
+        axios.get<Option[]>('http://localhost:3000/api/options', {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        })
             .then(res => setOptions(res.data))
             .catch(err => console.error(err));
     }, []);
@@ -24,7 +28,12 @@ const OptionsAdmin: React.FC = () => {
         e.preventDefault();
         const nouvelleOption = { nom: nouvelleOptionNom, prix: nouvelleOptionPrix };
         
-        axios.post('http://localhost:3000/api/options', nouvelleOption)
+        axios.post('http://localhost:3000/api/options', nouvelleOption,
+        {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        })
             .then(res => {
                 setOptions([...options, res.data]);
                 setNouvelleOptionNom('');
@@ -34,13 +43,19 @@ const OptionsAdmin: React.FC = () => {
     };
 
     const handleDelete = (optionId: number) => {
-        axios.delete(`http://localhost:3000/api/options/${optionId}`)
+        axios.delete(`http://localhost:3000/api/options/${optionId}`,
+        {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        })
             .then(() => {
                 // Juste mettre un message après la suppression
                 alert('Option supprimée');
             })
             .catch(err => console.error(err));
     };
+    
     
     return (
         <div className="container mt-4">

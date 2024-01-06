@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const modeleController = require('../controllers/modeleController');
+const moteurController = require('../controllers/moteurController');
 
-router.post('/', modeleController.createModele);
-router.get('/', modeleController.getAllModeles);
-router.get('/:modeleId', modeleController.getModeleById);
-router.put('/:modeleId', modeleController.updateModele);
-router.delete('/:modeleId', modeleController.deleteModele);
+router.get('/', moteurController.getAllMoteurs);
+router.get('/:id', moteurController.getMoteurById);
+router.post('/', moteurController.createMoteur);
+router.put('/:id', moteurController.updateMoteur);
+router.delete('/:id', moteurController.deleteMoteur);
 
 module.exports = router;
