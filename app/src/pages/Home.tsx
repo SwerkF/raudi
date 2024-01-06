@@ -15,7 +15,7 @@ const ModelesList = () => {
             .catch(error => console.log(error));
     }, []);
 
-    const voirDetails = (id) => {
+    const voirDetails = (id: number) => {
         navigate(`/modele/${id}`); // Redirige vers la page de détail
     };
 

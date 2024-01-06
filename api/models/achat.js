@@ -14,10 +14,6 @@ const Achat = sequelize.define('achat', {
         type: Sequelize.DATE,
         allowNull: false
     },
-    prix: {
-        type: Sequelize.INTEGER,
-        allowNull: false
-    },
 });
 
 Achat.belongsTo(user, { foreignKey: 'user_id' });
