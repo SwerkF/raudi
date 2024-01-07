@@ -56,7 +56,7 @@ function Nav() {
                         <ul className="navbar-nav ms-auto">
                             {user ? (
                                 <>
-                                    <li className="nav-item" onClick={() => handleRedirect("/profile")}>
+                                    <li className="nav-item" onClick={() => handleRedirect("/profile/"+user.id)}>
                                         <button className="nav-link">Profile</button>
                                     </li>
                                     <li className="nav-item" onClick={() => handleDisconnect()}>

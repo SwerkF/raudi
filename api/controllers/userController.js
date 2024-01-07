@@ -107,6 +107,20 @@ exports.updateUser = async (req, res) => {
     }
 };
 
+exports.updateUserPassword = async (req, res) => {
+    try {
+        const user = await User.findByPk(req.params.userId);
+        if (!user) {
+            return res.status(404).json({ error: 'Utilisateur non trouvé' });
+        }
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        await user.update({ password: hashedPassword });
+        res.json(user);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
 exports.deleteUser = async (req, res) => {
     try {
         const user = await User.findByPk(req.params.userId);
@@ -130,7 +144,7 @@ exports.verifyConnection = async (req, res) => {
             where: { email: email },
             include: [{
                 model: Role,
-                attributes: ['id', 'nom'] // You can specify the attributes you want to include for the role
+                attributes: ['id', 'nom'] 
             }]
         });
 
