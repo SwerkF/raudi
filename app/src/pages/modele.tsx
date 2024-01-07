@@ -16,7 +16,7 @@ const ModelesList = () => {
             .catch(error => console.log(error));
     }, []);
 
-    const trierModeles = (modeles, critere) => {
+    const trierModeles = (modeles: any, critere: any) => {
         return [...modeles].sort((a, b) => {
             if (critere === 'nom') {
                 return a[critere].localeCompare(b[critere]);
@@ -33,7 +33,7 @@ const ModelesList = () => {
         )
         .slice(0, 10); // Limite à 10 modèles après le tri et la recherche
 
-    const voirDetails = (id) => {
+    const voirDetails = (id: any) => {
         navigate(`/modele/${id}`);
     };
 

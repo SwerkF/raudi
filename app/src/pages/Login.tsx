@@ -5,8 +5,7 @@ import { useNavigate } from "react-router-dom";
 function Login() {
     
     const navigate = useNavigate();
-    const [email, setEmail] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
+    const [data, setData] = useState<any>([]);
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -30,20 +29,13 @@ function Login() {
         }
     }, []);
 
-    const handleEmailChange = (event: any) => {
-        setEmail(event.target.value);
-    }
-
-    const handlePasswordChange = (event: any) => {
-        setPassword(event.target.value);
+    const handleChange = (champ: any, event: any) => {
+        setData({ ...data, [champ]: event.target.value });
     }
 
     const handleSubmit = (event: any) => {
         event.preventDefault();
-        axios.post("http://localhost:3000/api/user/login", {
-            email: email,
-            password: password
-        })
+        axios.post("http://localhost:3000/api/user/login", data)
             .then((response) => {
                 if(response.status === 200) {
                     localStorage.setItem("token", response.data.token);
@@ -53,33 +45,32 @@ function Login() {
     }
 
     // redirect register
-    const handleRedirect = () => {
+    const  handleRedirect = () => {
         navigate("/register");
     }
 
     return (
         <>
-            <div className="container">
-                <div className="card w-50">
-                    <div className="card-header">
-                        <h1>Login</h1>
-                    </div>
-                    <div className="card-body">
-                        <div className="form-group">
-                            <label htmlFor="email">Email</label>
-                            <input type="email" value={email} onChange={handleEmailChange} className="form-control" id="email" placeholder="Email" />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="password">Mot de passe</label>
-                            <input type="password" value={password} onChange={handlePasswordChange} className="form-control" id="password" placeholder="Mot de passe" />
-                        </div>
-                        <button onClick={handleSubmit} className="btn btn-primary">Se connecter</button>
-                    </div>
-                    <div className="card-footer">
-                        Vous n'avez pas de compte ? <button onClick={handleRedirect} className="btn btn-link">Inscrivez-vous</button>
-                    </div>
+            <div className="card bg-light">
+            <article className="card-body mx-auto" style={{ maxWidth: '400px' }}>
+              <h4 className="card-title mt-3 text-center">Connexion</h4>
+              <p className="text-center">Connectez-vous à votre compte</p>
+              <form onSubmit={handleSubmit}>
+                <div className="form-group input-group mb-2">
+                    <span className="input-group-text"> <i className="fa fa-envelope"></i> </span>
+                  <input name="" className="form-control" placeholder="Adresse email" type="email" onChange={(e)=>handleChange('email',e )} />
                 </div>
-            </div>
+                <div className="form-group input-group mb-2">
+                <span className="input-group-text"> <i className="fa fa-lock"></i> </span>
+                  <input className="form-control" placeholder="Mot de passe" type="password" onChange={(e)=>handleChange('password',e )}/>
+                </div>
+                <div className="form-group mt-2 text-center">
+                  <button type="submit" className="btn btn-primary btn-block">Connexion</button>
+                </div>
+                <p className="text-center">Pas encore de compte? <a  onClick={handleRedirect} href="#">Créer un compte</a> </p>
+              </form>
+            </article>
+          </div>
         </>
     )
 

@@ -9,6 +9,7 @@ import Modele from './pages/Modele'
 import ModeleDetail from './pages/ModeleDetail'
 import Admin from './pages/Admin'
 
+import Profile from './pages/Profile';
 
 function App() {
   return (
@@ -23,6 +24,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/admin/profile/:id" element={<Profile />} />
+          <Route path="/profile/:id" element={<Profile />} />
         </Routes>
       </Router>
     </>
