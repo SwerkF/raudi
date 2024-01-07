@@ -111,7 +111,7 @@ function Customise() {
                                     <h2>1. Votre modele</h2>
                                     <div className="d-flex justif-content-start">
                                         <div className="image" style={{paddingRight: "30px"}}>
-                                            <img src={'http://localhost:3000/images/'+modele.image} width={'100px'} alt={modele.image} />
+                                            <img src={'http://localhost:3000/src/'+modele.image} width={'100px'} alt={modele.image} />
                                         </div>
                                         <div className="d-flex flex-column justify-content-center">
                                             <p className="fw-bold mb-0">Modele {modele.nom}</p>

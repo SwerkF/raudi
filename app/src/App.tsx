@@ -9,11 +9,7 @@ import Modele from './pages/Modele'
 import ModeleDetail from './pages/ModeleDetail'
 import Admin from './pages/Admin'
 
-import AchatsParMoisChart from './components/AchatsParMoisChart'
-import AchatsUtilisateurs from './components/AchatAdmin'
-import OptionsAdmin from './components/OptionsAdmin'
-import MoteursAdmin from './components/MoteurAdmin'
-import Profile from './pages/profile';
+import Profile from './pages/Profile';
 
 function App() {
   return (
@@ -22,19 +18,14 @@ function App() {
         <Nav />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/vehicule/:id/customise" element={<Customise />} />
+          <Route path="/modele/:id/customise" element={<Customise />} />
           <Route path="/modele" element={<Modele />} />
           <Route path="/modele/:id" element={<ModeleDetail />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/admin" element={<Admin />} />
-          <Route path="/admin/achat" element={<AchatsUtilisateurs />} />
           <Route path="/admin/profile/:id" element={<Profile />} />
           <Route path="/profile/:id" element={<Profile />} />
-          <Route path="/admin/options" element={<OptionsAdmin />} />
-          <Route path="/admin/roles" element={<OptionsAdmin />} />
-          <Route path="/admin/moteur" element={<MoteursAdmin />} />
-          <Route path="/admin/mensuel" element={<AchatsParMoisChart />} />
         </Routes>
       </Router>
     </>
