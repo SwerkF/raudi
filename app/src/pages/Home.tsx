@@ -14,7 +14,7 @@ const ModelesList = () => {
             .catch(error => console.log(error));
     }, []);
 
-    const voirDetails = (id) => {
+    const voirDetails = (id:any) => {
         navigate(`/modele/${id}`);
     };
 

@@ -42,5 +42,6 @@ app.use('/api/moteurs', moteurRoute);
 app.use('/src', express.static('src')); // Serve files from the 'uploads' folder
 
 app.listen(3000, () => {
+
     console.log('Server started on port 3000');
 });

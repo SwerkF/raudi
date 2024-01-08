@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const ModelesList = () => {
+const Modele = () => {
     const [modeles, setModeles] = useState<any[]>([]);
     const [recherche, setRecherche] = useState('');
     const [tri, setTri] = useState<string>('nom');
@@ -24,9 +24,9 @@ const ModelesList = () => {
             .catch(error => console.log(error));
     }, []);
 
-    const trierModeles = (modeles, critere) => {
+    const trierModeles = (modeles:any, critere:any) => {
         return [...modeles].sort((a, b) => {
-            if (critere === 'nom' || critere === 'moteur') {
+            if (critere === 'nom') {
                 return a[critere].localeCompare(b[critere]);
             } else if (critere === 'prix' || critere === 'vitesse_max') {
                 return parseFloat(b[critere]) - parseFloat(a[critere]);
@@ -34,14 +34,19 @@ const ModelesList = () => {
         });
     };
 
-    const modelesFiltres = trierModeles(modeles, tri)
-        .filter(modele =>
-            (moteurSelectionne === '' || modele.moteur === moteurSelectionne) &&
-            modele.nom.toLowerCase().includes(recherche.toLowerCase())
-        )
-        .slice(0, 10); // Limite à 10 modèles après le tri et la recherche
+    const filtrerParMoteur = (modeles:any, moteurSelectionne:any) => {
+        return moteurSelectionne ? modeles.filter((modele:any) => modele.moteur === moteurSelectionne) : modeles;
+    };
 
-    const voirDetails = (id) => {
+    const modelesFiltres = filtrerParMoteur(
+        trierModeles(modeles, tri)
+            .filter(modele =>
+                modele.nom.toLowerCase().includes(recherche.toLowerCase())
+            ),
+        moteurSelectionne
+    ).slice(0, 10);
+
+    const voirDetails = (id:number) => {
         navigate(`/modele/${id}`);
     };
 
@@ -59,25 +64,17 @@ const ModelesList = () => {
                 <button className="btn btn-secondary me-2" onClick={() => setTri('nom')}>Trier par Nom</button>
                 <button className="btn btn-secondary me-2" onClick={() => setTri('prix')}>Trier par Prix</button>
                 <button className="btn btn-secondary me-2" onClick={() => setTri('vitesse_max')}>Trier par Vitesse</button>
-                <select
-                    className="form-select d-inline-block w-auto"
-                    value={moteurSelectionne}
-                    onChange={(e) => {
-                        setMoteurSelectionne(e.target.value);
-                        setTri('moteur');
-                    }}
-                >
-                    <option value="">Choisir un Moteur</option>
-                    {moteurs.map(moteur => (
-                        <option key={moteur} value={moteur}>{moteur}</option>
-                    ))}
-                </select>
             </div>
             <div className="row">
-                {modelesFiltres.map(modele => (
+                {modelesFiltres.map((modele:any) => (
                     <div className="col-md-4 mb-4" key={modele.id}>
                         <div className="card h-100">
-                            <img src={modele.image} alt={modele.nom} className="card-img-top" />
+                            <img src={"http://localhost:3000/src/"+modele.image} alt={modele.nom} style={{
+                                width: "100%",
+                                height: "10vw",
+                                objectFit: "cover"
+                            
+                            }} />
                             <div className="card-body d-flex flex-column">
                                 <h5 className="card-title">{modele.nom}</h5>
                                 <p className="card-text">{modele.description}</p>
@@ -95,4 +92,4 @@ const ModelesList = () => {
     );
 };
 
-export default ModelesList;
+export default Modele;

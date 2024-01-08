@@ -50,9 +50,9 @@ const Admin = () => {
                 user && user.role.nom === 'Admin' ? (
                   <>
                     <option value="ModeleAdmin">Modele</option>
-                    <option value="AchatsUtilisateurs">Achats Utilisateurs</option>
                     <option value="MoteursAdmin">Moteurs</option>
                     <option value="OptionsAdmin">Options</option>
+                    <option value="AchatsUtilisateurs">Achats Utilisateurs</option>
                     <option value="AchatsParMoisChart">Achats par mois</option>
                   </>
                 ) : (

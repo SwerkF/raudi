@@ -5,6 +5,7 @@ const fs = require('fs');
 exports.createModele = async (req, res) => {
     try {
         // Extract other form fields from req.body
+        console.log(req.body)
         let { nom, prix, description, nombre_portes, nombre_places, taille, vitesse_max, couleur, moteur_id, date_fabrication } = req.body;
 
         // Check if model exists in the database
@@ -50,7 +51,9 @@ exports.createModele = async (req, res) => {
 
 exports.getAllModeles = async (req, res) => {
     try {
-        const modeles = await Modele.findAll();
+        const modeles = await Modele.findAll({
+            include: [Moteur]
+        });
         res.json(modeles);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -77,7 +80,7 @@ exports.getModeleById = async (req, res) => {
 exports.updateModele = async (req, res) => {
     // same as createModele 
     try {
-        let { nom, prix, description, nombre_portes, nombre_places, taille, vitesse_max, couleur, moteur_id } = req.body;
+        let { nom, prix, description, nombre_portes, nombre_places, taille, vitesse_max, couleur, moteur_id, date_fabrication } = req.body;
 
         let moteur = await Moteur.findByPk(moteur_id);
         if (!moteur) {
@@ -103,6 +106,7 @@ exports.updateModele = async (req, res) => {
                 couleur: couleur,
                 moteur_id: moteur_id,
                 image: req.file.filename, 
+                date_fabrication: date_fabrication,
             });
         } else {
             modele = await modele.update({
@@ -115,6 +119,7 @@ exports.updateModele = async (req, res) => {
                 vitesse_max: vitesse_max,
                 couleur: couleur,
                 moteur_id: moteur_id,
+                date_fabrication: date_fabrication,
             });
         }
 

@@ -112,70 +112,75 @@ const MoteursAdmin: React.FC = () => {
   return (
     <>    
     <h1 className="text-center">Gestion des moteurs</h1>
-    <div className="container mt-4 d-flex">
-      <table className="table w-50">
-        <caption>Liste des moteurs</caption>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Type</th>
-            <th>Puissance (CV)</th>
-            <th>Edite</th>
-            <th>Supprime</th>
-          </tr>
-        </thead>
-        <tbody>
-          {moteurs.map((moteur) => (
-            <tr key={moteur.id}>
-              <td>{moteur.id}</td>
-              <td>{moteur.type}</td>
-              <td>{moteur.puissance}</td>
-              <td style={{ width: "5%" }}>
-                <button
-                  className="btn btn-danger me-2"
-                  onClick={() => handleDelete(moteur.id)}
-                >
-                  <i className="bi bi-trash3"></i>
-                </button>
-              </td>
-              <td style={{ width: "5%" }}>
-                <button
-                  className="btn btn-primary"
-                  data-bs-toggle="modal"
-                  data-bs-target="#updateModal"
-                  onClick={() => handleGetWhere(moteur.id)}
-                >
-                  <i className="bi bi-pencil-square"></i>
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      <form onSubmit={handleSubmit} className="mt-3 ms-5 ps-5 w-25">
-        <div className="mb-3">
-          <label className="form-label">Type de moteur: </label>
-          <input
-            type="text"
-            className="form-control"
-            value={newMoteur.type}
-            onChange={(e) => handleChangeNew("type", e.target.value)}
-          />
+    <div className="container">
+      <div className="card">
+        <div className="card-header">
+          <h5 className="">Liste des Moteurs</h5>
         </div>
-        <div className="mb-3">
-          <label className="form-label">Puissance (CV): </label>
-          <input
-            type="number"
-            className="form-control"
-            value={newMoteur.puissance.toString()}
-            onChange={(e) => handleChangeNew("puissance", e.target.value)}
-          />
+        <div className="card-body d-flex">
+            <table className="table w-50">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Type</th>
+                  <th>Puissance (CV)</th>
+                  <th>Edite</th>
+                  <th>Supprimer</th>
+                </tr>
+              </thead>
+              <tbody>
+                {moteurs.map((moteur) => (
+                  <tr key={moteur.id}>
+                    <td>{moteur.id}</td>
+                    <td>{moteur.type}</td>
+                    <td>{moteur.puissance}</td>
+                    <td style={{ width: "5%" }}>
+                      <button
+                        className="btn btn-danger me-2"
+                        onClick={() => handleDelete(moteur.id)}
+                      >
+                        <i className="bi bi-trash3"></i>
+                      </button>
+                    </td>
+                    <td style={{ width: "5%" }}>
+                      <button
+                        className="btn btn-primary"
+                        data-bs-toggle="modal"
+                        data-bs-target="#updateModal"
+                        onClick={() => handleGetWhere(moteur.id)}
+                      >
+                        <i className="bi bi-pencil-square"></i>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <form onSubmit={handleSubmit} className="mt-3 ms-5 ps-5 w-25">
+              <div className="mb-3">
+                <label className="form-label">Type de moteur: </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={newMoteur.type}
+                  onChange={(e) => handleChangeNew("type", e.target.value)}
+                />
+              </div>
+              <div className="mb-3">
+                <label className="form-label">Puissance (CV): </label>
+                <input
+                  type="number"
+                  className="form-control"
+                  value={newMoteur.puissance.toString()}
+                  onChange={(e) => handleChangeNew("puissance", e.target.value)}
+                />
+              </div>
+              <button type="submit" className="btn btn-primary w-100">
+                Ajouter Moteur
+              </button>
+            </form>
         </div>
-        <button type="submit" className="btn btn-success">
-          Ajouter Moteur
-        </button>
-      </form>
+      </div>
 
       <div
         className="modal fade"

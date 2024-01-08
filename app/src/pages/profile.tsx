@@ -126,67 +126,53 @@ const Profile: React.FC = () => {
                     onChange={(e) => handleChange("nom", e.target.value)}
                   />
                 </div>
-                <div className="col-md-6">
-                  <label className="labels">Prénom</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={user.prenom || ""}
-                    placeholder="Prénom"
-                    onChange={(e) => handleChange("prenom", e.target.value)}
-                  />
+                <h5 className="text-left">Informations personnelles</h5>
+                <div className="row mt-2">
+                    <div className="col-md-6">
+                        <label className="labels">Nom</label>
+                        <input type="text" className="form-control" placeholder="Nom" value={user.nom || ''}
+                               onChange={(e)=> handleChange('nom', e.target.value)}/>
+                    </div>
+                    <div className="col-md-6">
+                        <label className="labels">Prénom</label>
+                        <input type="text" className="form-control" value={user.prenom || ''} placeholder="Prénom"
+                               onChange={(e)=> handleChange('prenom', e.target.value)}/>
+                    </div>
                 </div>
-              </div>
-              <div className="row mt-3">
-                <div className="col-md-12">
-                  <label className="labels">Téléphone</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Entrez numéro de téléphone"
-                    value={user.telephone || ""}
-                    onChange={(e) => handleChange("telephone", e.target.value)}
-                  />
+
+                <div className="row mt-3">
+                  <h5 className="text-left">Téléphone</h5>
+                  <div className="col-md-12">
+                      <label className="labels">Téléphone</label>
+                      <input type="text" className="form-control" placeholder="Entrez numéro de téléphone" 
+                              value={user.telephone || ''} 
+                              onChange={(e)=> handleChange('telephone', e.target.value)}/>
+                  </div>
                 </div>
-              </div>
-              <div className="row mt-3">
-                <div className="col-md-12 mb-2">
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Entrez adresse"
-                    value={user.adresse || ""}
-                    onChange={(e) => handleChange("adresse", e.target.value)}
-                  />
+                <h5 className="text-left mt-3">Adresse</h5>
+                <div className="row mt-3">
+                    <div className="col-md-12 mb-2">
+                        <label className="labels">Adresse</label>
+                        <input type="text" className="form-control" placeholder="Entrez adresse" 
+                               value={user.adresse || ''} 
+                               onChange={(e)=> handleChange('adresse', e.target.value)}/>
+                    </div>
+                    <div className="col-md-6 mb-2">
+                        <label className="labels">Code postal</label>
+                        <input type="text" className="form-control" placeholder="Entrez code postal" 
+                               value={user.code_postal || ''} 
+                               onChange={(e)=> handleChange('code_postal', e.target.value)}/>
+                    </div>
+                    <div className="col-md-6">
+                        <label className="labels">Ville</label>
+                        <input type="text" className="form-control" placeholder="Entrez ville" 
+                               value={user.ville || ''} 
+                               onChange={(e)=> handleChange('ville', e.target.value)}/>
+                    </div>
                 </div>
-                <div className="col-md-6 mb-2">
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Entrez code postal"
-                    value={user.code_postal || ""}
-                    onChange={(e) =>
-                      handleChange("code_postal", e.target.value)
-                    }
-                  />
+                <div className="mt-5 text-center">
+                    <button className="btn btn-primary profile-button w-100" type="submit">Enregistrer le profil</button>
                 </div>
-                <div className="col-md-6">
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Entrez ville"
-                    value={user.ville || ""}
-                    onChange={(e) => handleChange("ville", e.target.value)}
-                  />
-                </div>
-              </div>
-              <div className="mt-5 text-center">
-                <button
-                  className="btn btn-primary profile-button"
-                  type="submit"
-                >
-                  Enregistrer le profil
-                </button>
               </div>
             </div>
           </div>

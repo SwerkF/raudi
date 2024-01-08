@@ -126,49 +126,53 @@ const OptionsAdmin: React.FC = () => {
 
 
   return (
-    <>    <div className="container mt-4 d-flex">
-      <table className="table text-center w-75">
-      <caption>Liste des options</caption>
-          <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nom</th>
-            <th>Prix (€)</th>
-            <th>Edit</th>
-            <th>Suppime</th>
-          </tr>
-        </thead>
-        <tbody>
-          {options.map((option) => (
-            <tr key={option.id}>
-              <td>{option.id}</td>
-              <td>{option.nom}</td>
-              <td>{option.prix}</td>
-              <td style={{width:"5%"}}>
-               
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={() => handleGetWhere(option.id)}
-                  data-bs-toggle="modal"
-                  data-bs-target="#exampleModal"
-                >
-<i className="bi bi-pencil-square"></i>                </button>
-              </td>
-              <td style={{width:"5%"}}>  
-              <button
-                  className="btn btn-danger me-2"
-                  onClick={() => handleDelete(option.id)}
-                >
-                  <i className="bi bi-trash3"></i>                
-                </button>
-              </td>
+    <>    
+    <div className="container">
+      <div className="card">
+        <div className="card-header">
+          <h5 className="">Liste des options</h5>
+        </div>
+        <div className="card-body d-flex">
+          <table className="table text-center w-75">
+            <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nom</th>
+              <th>Prix (€)</th>
+              <th>Edit</th>
+              <th>Suppime</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-
-      <form onSubmit={handleSubmit} className="mt-3 ms-auto">
+          </thead>
+          <tbody>
+            {options.map((option) => (
+              <tr key={option.id}>
+                <td>{option.id}</td>
+                <td>{option.nom}</td>
+                <td>{option.prix}</td>
+                <td style={{width:"5%"}}>
+                
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={() => handleGetWhere(option.id)}
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal"
+                  >
+                  <i className="bi bi-pencil-square"></i>                </button>
+                </td>
+                <td style={{width:"5%"}}>  
+                <button
+                    className="btn btn-danger me-2"
+                    onClick={() => handleDelete(option.id)}
+                  >
+                    <i className="bi bi-trash3"></i>                
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <form onSubmit={handleSubmit} className="mt-3 ms-auto">
         <div className="mb-3">
           <label className="form-label">Nom de l'option: </label>
           <input
@@ -196,10 +200,13 @@ const OptionsAdmin: React.FC = () => {
             onChange={(e) => handleChange("prix", e.target.value)}
           />
         </div>
-        <button type="submit" className="btn btn-primary">
+        <button type="submit" className="btn btn-primary w-100">
           Ajouter Option
         </button>
       </form>
+        </div>
+      </div>
+      
 
       <div
         className="modal fade"
@@ -265,8 +272,9 @@ const OptionsAdmin: React.FC = () => {
         </div>
       </div>
     </div>
-    </>
+    </> 
   );
 };
+
 
 export default OptionsAdmin;

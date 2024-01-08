@@ -8,7 +8,20 @@ function AdminModele() {
   const navigate = useNavigate();
 
   const [modeles, setModeles] = useState<any>(null);
-  const [currentModele, setCurrentModele] = useState<any>(null);
+  const [currentModele, setCurrentModele] = useState<any>({
+    id: 0,
+    nom: "",
+    prix: 0,
+    description: "",
+    nombre_portes: 0,
+    nombre_places: 0,
+    image: null,
+    taille: 0,
+    vitesse_max: 0,
+    couleur: "",
+    moteur_id: 1,
+    date_fabrication: "",
+  });
   const [submitModele, setSubmitModele] = useState<any>({
     nom: "",
     prix: 0,
@@ -20,10 +33,12 @@ function AdminModele() {
     vitesse_max: 0,
     couleur: "",
     moteur_id: 1,
+    date_fabrication: "",
   });
   const [moteurs, setMoteurs] = useState<any>(null);
 
   useEffect(() => {
+    // Récupération des modeles
     axios
       .get("http://localhost:3000/api/modele", {
         headers: {
@@ -34,6 +49,7 @@ function AdminModele() {
         if (response.status === 200) {
           setModeles(response.data);
 
+          // Récupération des moteurs
           axios
             .get("http://localhost:3000/api/moteurs", {
               headers: {
@@ -57,10 +73,7 @@ function AdminModele() {
       });
   }, []);
 
-  const handleRedirect = (menu: string) => {
-    navigate(menu);
-  };
-
+  // Edit modele
   const handleEdit = (modele: any) => {
     const formData = new FormData();
     formData.append("nom", String(currentModele.nom));
@@ -78,6 +91,7 @@ function AdminModele() {
       formData.append("image", currentModele.image[0]);
     }
 
+    // Update
     axios
       .put(`http://localhost:3000/api/modele/${currentModele.id}`, formData, {
         headers: {
@@ -96,6 +110,7 @@ function AdminModele() {
       });
   };
 
+  // Delete modele
   const handleDelete = (id: number) => {
     axios
       .delete(`http://localhost:3000/api/modele/${id}`, {
@@ -113,9 +128,11 @@ function AdminModele() {
       });
   };
 
+  // Add modele
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
+    // Creation formdata pour envoi des données + image
     const formData = new FormData();
     formData.append("nom", String(submitModele.nom));
     formData.append("prix", String(submitModele.prix));
@@ -126,14 +143,11 @@ function AdminModele() {
     formData.append("vitesse_max", String(submitModele.vitesse_max));
     formData.append("couleur", String(submitModele.couleur));
     formData.append("moteur_id", String(submitModele.moteur_id));
-    formData.append("date_fabrication", currentModele.date_fabrication);
+    formData.append("date_fabrication", submitModele.date_fabrication);
+    
     formData.append("image", submitModele.image[0]);
 
-    // for each entries in formData, display key and value
-    for (var pair of formData.entries()) {
-      console.log(pair[0] + ", " + pair[1]);
-    }
-
+    // Envoi des données
     axios
       .post("http://localhost:3000/api/modele", formData, {
         headers: {
@@ -350,7 +364,7 @@ function AdminModele() {
                 }
               />
             </div>
-            <button type="submit" className="btn btn-success">
+            <button type="submit" className="btn btn-primary">
               Ajouter Modele
             </button>
           </form>
@@ -558,7 +572,7 @@ function AdminModele() {
                   type="button"
                   className="btn btn-primary"
                 >
-                  Save changes
+                  Sauvegarder les changements
                 </button>
               </div>
             </div>
