@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Bar } from 'react-chartjs-2';
 import 'chart.js/auto';
+import { useNavigate } from 'react-router-dom';
 
 interface Achat {
     id: number;
@@ -20,6 +21,8 @@ type ChartData = {
 };
 
 const AchatsParMoisChart: React.FC = () => {
+    
+    const navigate = useNavigate();
     const [achats, setAchats] = useState<Achat[]>([]);
     const [chartData, setChartData] = useState<ChartData>();
 
@@ -34,7 +37,10 @@ const AchatsParMoisChart: React.FC = () => {
                 setAchats(res.data);
                 setupChartData(res.data);
             })
-            .catch(err => console.error(err));
+            .catch(err => {
+                console.error('Une erreur est survenue lors de la récupération des achats: ', err);
+                navigate('/login');
+            });
     }, []);
 
     const setupChartData = (achats: Achat[]) => {

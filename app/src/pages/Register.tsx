@@ -1,78 +1,100 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function Register() {
     
     const navigate = useNavigate();
-    const [email, setEmail] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
-    const [nom, setNom] = useState<string>("");
-    const [prenom, setPrenom] = useState<string>("");
+    const [data, setData] = useState<any>([]); 
 
-    // handle all var
-    const handleEmailChange = (event: any) => {
-        setEmail(event.target.value);
-    }
+    useEffect(() => {
+      const token = localStorage.getItem("token");
+      if(token) {
+          axios.get("http://localhost:3000/api/user/me", {
+              headers: {
+                  Authorization: `Bearer ${token}`
+              }
+          })
+              .then((response) => {
+                  if(response.status === 200) {
+                      navigate("/");
+                  } else {
+                      localStorage.removeItem("token");
+                  }
+              })
+              .catch((err:any) => {
+                  localStorage.removeItem("token");
+                  console.log(err)
+              })
+              
+      }
+  }, []);
 
-    const handlePasswordChange = (event: any) => {
-        setPassword(event.target.value);
-    }
-
-    const handleNomChange = (event: any) => {
-        setNom(event.target.value);
-    }
-
-    const handlePrenomChange = (event: any) => {
-        setPrenom(event.target.value);
+   const handleChange = (champ: any, event: any) => {
+        setData({ ...data, [champ]: event.target.value });
     }
 
     const handleSubmit = (event: any) => {
         event.preventDefault();
-        axios.post("http://localhost:3000/api/user/register", {
-            email: email,
-            password: password,
-            nom: nom,
-            prenom: prenom
-        })
+        console.log(data);
+        axios.post("http://localhost:3000/api/user/register", data)
             .then((response) => {
-                if(response.status === 200) {
+                if (response.status === 200) {
                     localStorage.setItem("token", response.data.token);
                     navigate("/");
                 }
-            })
+            });
     };
+
+    const  handleRedirect = () => {
+        navigate("/login");
+    }
 
     return (
         <>
-            <div className="container">
-                <div className="card w-50">
-                    <div className="card-header">
-                        <h1>Register</h1>
-                    </div>
-                    <div className="card-body">
-                        <div className="form-group">
-                            <label htmlFor="email">Email</label>
-                            <input type="email" value={email} onChange={handleEmailChange} className="form-control" id="email" placeholder="Email" />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="password">Mot de passe</label>
-                            <input type="password" value={password} onChange={handlePasswordChange} className="form-control" id="password" placeholder="Mot de passe" />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="nom">Nom</label>
-                            <input type="text" value={nom} onChange={handleNomChange} className="form-control" id="nom" placeholder="Nom" />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="prenom">Prénom</label>
-                            <input type="text" value={prenom} onChange={handlePrenomChange} className="form-control" id="prenom" placeholder="Prénom" />
-                        </div>
-                        <button onClick={handleSubmit} className="btn btn-primary">S'inscrire</button>
-                    </div>
+          <div className="card bg-light">
+            <div className="card-body mx-auto" style={{ maxWidth: '400px' }}>
+              <h4 className="card-title mt-3 text-center">Créer un compte</h4>
+              <p className="text-center">Commencez par créer votre compte</p>
+              <form onSubmit={handleSubmit}>
+                <div className="form-group input-group mb-2">
+                    <span className="input-group-text"> <i className="fa fa-user"></i> </span>
+                  <input name="" className=" form-control" placeholder="Nom" type="text"  onChange={(e)=>handleChange('nom',e )}/>
                 </div>
+                <div className="form-group input-group mb-2">
+                    <span className="input-group-text"> <i className="fa fa-user"></i> </span>
+                  <input name="" className=" form-control" placeholder="Prenom" type="text"  onChange={(e)=>handleChange('prenom',e )}/>
+                </div>
+                <div className="form-group input-group mb-2">
+                    <span className="input-group-text"> <i className="fa fa-envelope"></i> </span>
+                  <input name="" className="form-control" placeholder="Adresse email" type="email" onChange={(e)=>handleChange('email',e )} />
+                </div>
+                <div className="form-group input-group mb-2">
+                    <span className="input-group-text"> <i className="fa fa-phone"></i> </span>
+                  <select className="custom-select" style={{ maxWidth: '120px' }} >
+                    <option selected>+33</option>
+                    <option value="1">+242</option>
+                  </select>
+                  <input name="" className="form-control" placeholder="Numéro de téléphone" type="text" onChange={(e)=>handleChange('telephone',e )}/>
+                </div>
+                <div className="form-group input-group mb-2">
+                    <span className="input-group-text"> <i className="fa fa-lock"></i> </span>
+                  <input className="form-control" placeholder="Mot de passe" type="password" />
+                </div>
+                <div className="form-group input-group mb-2">
+                    <span className="input-group-text"> <i className="fa fa-lock"></i> </span>
+                  <input className="form-control" placeholder="Confirmer le mot de passe" type="password" onChange={(e)=>handleChange('password',e )} />
+                </div>
+                <div className="form-group mt-2 text-center">
+                  <button type="submit" className="btn btn-primary btn-block">Créer un compte</button>
+                </div>
+                <p className="text-center">Deja un compte? <a href="#" onClick={handleRedirect}>Connexion</a> </p>
+              </form>
             </div>
+          </div>
         </>
-    )
+      )
+      
 
 }
 

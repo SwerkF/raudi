@@ -1,11 +1,14 @@
 // importer useEffect et useState
 import { useEffect, useState } from "react"
 
+import { useNavigate } from 'react-router-dom';
+
 // importer axios
 import axios from "axios"
 
 function Customise() {
 
+    const navigate = useNavigate();
     const [modele, setModele] = useState<any>(null)
     const [options, setOptions] = useState<any>([])
     const [chosenOptions, setChosenOptions] = useState<any>([])
@@ -17,17 +20,39 @@ function Customise() {
     const [tel, setTel] = useState<any>('');
 
     useEffect(() => {
-        const id = window.location.href.split("/")[4];
-        axios.get(`http://localhost:3000/api/modele/${id}`)
-            .then((response) => {
-                setModele(response.data);
-                setTotal(response.data.prix);
-                axios.get(`http://localhost:3000/api/options`)
-                    .then((response) => {
-                        setOptions(response.data);
-                    })
-                
-            })
+        const token = localStorage.getItem("token");
+        if(token) {
+            axios.get("http://localhost:3000/api/user/me", {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }})
+                .then((response) => {
+                    // if token is valid
+                    if(response.status === 200) {
+                        const id = window.location.href.split("/")[4];
+                        axios.get(`http://localhost:3000/api/modele/${id}`)
+                            .then((response) => {
+                                setModele(response.data);
+                                setTotal(response.data.prix);
+                                axios.get(`http://localhost:3000/api/options`)
+                                    .then((response) => {
+                                        setOptions(response.data);
+                                    })
+                                
+                            })
+                    } else {
+                        // if token is not valid
+                        localStorage.removeItem("token");
+                        navigate("/mo");
+                    }
+                })
+                .catch(() => {
+                    localStorage.removeItem("token");
+                    navigate("/login");
+                })
+        } else {
+            navigate("/login");
+        }
     }, [])
 
     const handleGetTotal = () => {
@@ -74,7 +99,7 @@ function Customise() {
     const handleSubmit = () => {
         const token = localStorage.getItem("token");
         const id = window.location.href.split("/")[4];
-        // if all values are not set return
+
         if(!adresse || !cp || !ville || !tel) {
             return alert("Veuillez remplir tous les champs");
         }
@@ -108,10 +133,10 @@ function Customise() {
                             <h1>Cutomisation de {modele.nom}</h1>
                             <div className="row">
                                 <div className="col-9">
-                                    <h2>1. Votre modele</h2>
+                                    <h5>1. Votre modele</h5>
                                     <div className="d-flex justif-content-start">
                                         <div className="image" style={{paddingRight: "30px"}}>
-                                            <img src={'http://localhost:3000/images/'+modele.image} width={'100px'} alt={modele.image} />
+                                            <img src={'http://localhost:3000/src/'+modele.image} width={'100px'} alt={modele.image} />
                                         </div>
                                         <div className="d-flex flex-column justify-content-center">
                                             <p className="fw-bold mb-0">Modele {modele.nom}</p>
@@ -120,7 +145,7 @@ function Customise() {
                                         </div>
                                     </div>
                                     <hr/>
-                                    <h2 className="mt-4">2. Choisissez vos options</h2>
+                                    <h5 className="mt-4">2. Choisissez vos options</h5>
                                     <div className="row">
                                         {
                                             options && options.map((option: any) => {
@@ -135,7 +160,7 @@ function Customise() {
                                         }
                                     </div>
                                     <hr/>
-                                    <h3 className="mt-4">3. Vos informations</h3>
+                                    <h5 className="mt-4">3. Vos informations</h5>
                                     <div className="row">
                                         <div className="col-6">
                                             <div className="form-group">
@@ -163,33 +188,31 @@ function Customise() {
                                         </div>
                                     </div>
                                     <hr/>
-                                    <h3 className="mt-4">4. Paiement</h3>
-                                    <div className="row">
-                                        <div className="card">
-                                            <div className="card-header">
-                                                <p>Carte bancaire</p>
+                                    <h5 className="mt-4">4. Paiement</h5>
+                                    <div className="card">
+                                        <div className="card-header">
+                                            <p>Carte bancaire</p>
+                                        </div>
+                                        <div className="card-body">
+                                            <div className="form-group">
+                                                <label htmlFor="numero">Numéro de carte</label>
+                                                <input type="text" className="form-control" name="numero" id="numero" />
                                             </div>
-                                            <div className="card-body">
-                                                <div className="form-group">
-                                                    <label htmlFor="numero">Numéro de carte</label>
-                                                    <input type="text" className="form-control" name="numero" id="numero" />
-                                                </div>
-                                                <div className="form-group">
-                                                    <label htmlFor="nom">Nom</label>
-                                                    <input type="text" className="form-control" name="nom" id="nom" />
-                                                </div>
-                                                <div className="form-group">
-                                                    <label htmlFor="date">Date d'expiration</label>
-                                                    <input type="text" className="form-control" name="date" id="date" />
-                                                </div>
-                                                <div className="form-group">
-                                                    <label htmlFor="code">Code de sécurité</label>
-                                                    <input type="text" className="form-control" name="code" id="code" />
-                                                </div>
+                                            <div className="form-group">
+                                                <label htmlFor="nom">Nom</label>
+                                                <input type="text" className="form-control" name="nom" id="nom" />
                                             </div>
-                                            <div className="card-footer">
-                                                <button className="btn btn-primary w-100" onClick={() => handleSubmit()}>Payer</button>
+                                            <div className="form-group">
+                                                <label htmlFor="date">Date d'expiration</label>
+                                                <input type="text" className="form-control" name="date" id="date" />
                                             </div>
+                                            <div className="form-group">
+                                                <label htmlFor="code">Code de sécurité</label>
+                                                <input type="text" className="form-control" name="code" id="code" />
+                                            </div>
+                                        </div>
+                                        <div className="card-footer">
+                                            <button className="btn btn-primary w-100" onClick={() => handleSubmit()}>Payer</button>
                                         </div>
                                     </div>
                                 </div>

@@ -25,13 +25,15 @@ const ModelesList = () => {
             <div className="row">
                 {modeles.map(modele => (
                     <div className="col-md-4 mb-4" key={modele.id}>
-                        <div className="card h-100">
+                        <div className="card">
+                            <div className="card-header">
+                                <img src={"http://localhost:3000/src/"+modele.image} alt={modele.nom} className="card-img-top" />
+                            </div>
                             <div className="card-body">
                                 <h5 className="card-title">{modele.nom}</h5>
                                 <p className="card-text">{modele.description}</p>
-                                <button className="btn btn-primary" onClick={() => voirDetails(modele.id)}>
-                                    Voir Détails
-                                </button>
+                                <p className="card-text fw-bold">{modele.prix} €</p>
+                                <button className="btn btn-primary" onClick={() => voirDetails(modele.id)}>Voir les détails</button>
                             </div>
                         </div>
                     </div>
