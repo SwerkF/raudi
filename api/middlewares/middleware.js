@@ -64,7 +64,7 @@ exports.isAdminOrComptable = async (req, res, next) => {
                 where: { email: email },
                 include: [{
                     model: Role,
-                    attributes: ['id', 'nom'] // You can specify the attributes you want to include for the role
+                    attributes: ['id', 'nom'] 
                 }]
             });
 
