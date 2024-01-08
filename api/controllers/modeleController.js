@@ -57,7 +57,12 @@ exports.getAllModeles = async (req, res) => {
 
 exports.getModeleById = async (req, res) => {
     try {
-        const modele = await Modele.findByPk(req.params.modeleId);
+        const modele = await Modele.findByPk(req.params.modeleId, {
+            include: [{
+                model: Moteur,
+                attributes: ['id', 'type',] 
+            }]
+        });
         if (!modele) {
             return res.status(404).json({ error: 'Modèle non trouvé' });
         }

@@ -110,15 +110,18 @@ const MoteursAdmin: React.FC = () => {
   };
 
   return (
-    <div className="container mt-4">
-      <h1>Gestion des Moteurs</h1>
-      <table className="table">
+    <>    
+    <h1 className="text-center">Gestion des moteurs</h1>
+    <div className="container mt-4 d-flex">
+      <table className="table w-50">
+        <caption>Liste des moteurs</caption>
         <thead>
           <tr>
             <th>ID</th>
             <th>Type</th>
             <th>Puissance (CV)</th>
-            <th>Actions</th>
+            <th>Edite</th>
+            <th>Supprime</th>
           </tr>
         </thead>
         <tbody>
@@ -127,20 +130,22 @@ const MoteursAdmin: React.FC = () => {
               <td>{moteur.id}</td>
               <td>{moteur.type}</td>
               <td>{moteur.puissance}</td>
-              <td>
+              <td style={{ width: "5%" }}>
                 <button
                   className="btn btn-danger me-2"
                   onClick={() => handleDelete(moteur.id)}
                 >
-                  Supprimer
+                  <i className="bi bi-trash3"></i>
                 </button>
+              </td>
+              <td style={{ width: "5%" }}>
                 <button
                   className="btn btn-primary"
                   data-bs-toggle="modal"
                   data-bs-target="#updateModal"
                   onClick={() => handleGetWhere(moteur.id)}
                 >
-                  Modifier
+                  <i className="bi bi-pencil-square"></i>
                 </button>
               </td>
             </tr>
@@ -148,7 +153,7 @@ const MoteursAdmin: React.FC = () => {
         </tbody>
       </table>
 
-      <form onSubmit={handleSubmit} className="mt-3">
+      <form onSubmit={handleSubmit} className="mt-3 ms-5 ps-5 w-25">
         <div className="mb-3">
           <label className="form-label">Type de moteur: </label>
           <input
@@ -239,6 +244,8 @@ const MoteursAdmin: React.FC = () => {
         </div>
       </div>
     </div>
+    </>
+
   );
 };
 

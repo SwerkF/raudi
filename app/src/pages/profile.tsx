@@ -21,20 +21,20 @@ interface User {
 
 const Profile: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
-  const { id } = useParams<{ id: string }>(); // Spécifiez le type de paramètre
 
   useEffect(() => {
     axios
-      .get<User>(`http://localhost:3000/api/user/${id}`, {
+      .get<User>(`http://localhost:3000/api/user/me`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       })
       .then((res) => {
-        setUser(res.data);
+        console.log(res.data.user);
+        setUser(res.data.user);
       })
       .catch((err) => console.error(err));
-  }, [id]); // Ajoutez 'id' comme dépendance de useEffect
+  }, []);
 
   const handleChange = (champ: keyof User, value: string) => {
     setUser((prevUser) => (prevUser ? { ...prevUser, [champ]: value } : null));
@@ -124,20 +124,17 @@ const Profile: React.FC = () => {
                     </div>
                 </div>
                 <div className="row mt-3">
-                    <div className="col-md-12">
-                        <label className="labels">Adresse</label>
+                    <div className="col-md-12 mb-2">
                         <input type="text" className="form-control" placeholder="Entrez adresse" 
                                value={user.adresse || ''} 
                                onChange={(e)=> handleChange('adresse', e.target.value)}/>
                     </div>
-                    <div className="col-md-6">
-                        <label className="labels">Code postal</label>
+                    <div className="col-md-6 mb-2">
                         <input type="text" className="form-control" placeholder="Entrez code postal" 
                                value={user.code_postal || ''} 
                                onChange={(e)=> handleChange('code_postal', e.target.value)}/>
                     </div>
                     <div className="col-md-6">
-                        <label className="labels">Ville</label>
                         <input type="text" className="form-control" placeholder="Entrez ville" 
                                value={user.ville || ''} 
                                onChange={(e)=> handleChange('ville', e.target.value)}/>
@@ -154,20 +151,17 @@ const Profile: React.FC = () => {
                     <div className="d-flex justify-content-between align-items-center mb-3">
                         <h4 className="text-right">Changer le mot de passe</h4>
                     </div>
-                    <div className="col-md-12">
-                        <label className="labels">Ancien mot de passe</label>
+                    <div className="col-md-12 mb-2">
                         <input type="password" className="form-control" placeholder="Ancien mot de passe" 
                                value={user.oldPassword || ''}
                                onChange={(e)=> handleChange('oldPassword', e.target.value)}/>
                     </div>
-                    <div className="col-md-12">
-                        <label className="labels">Nouveau mot de passe</label>
+                    <div className="col-md-12 mb-2">
                         <input type="password" className="form-control" placeholder="Nouveau mot de passe" 
                                value={user.newPassword || ''}
                                onChange={(e)=> handleChange('newPassword', e.target.value)}/>
                     </div>
-                    <div className="col-md-12">
-                        <label className="labels">Confirmer le nouveau mot de passe</label>
+                    <div className="col-md-12 mb-2">
                         <input type="password" className="form-control" placeholder="Confirmer le nouveau mot de passe" 
                                value={user.confirmNewPassword || ''}
                                onChange={(e)=> handleChange('confirmNewPassword', e.target.value)}/>
