@@ -87,8 +87,6 @@ const getOptions = (achats: any) => {
 }
 
 
-console.log(achats);
-
   return (
 <div className="container">
   <div className="d-flex align-items-center p-3 my-3  rounded shadow-sm">

@@ -45,6 +45,10 @@ const Modele = sequelize.define('modele', {
         type: Sequelize.STRING,
         allowNull: false
     },
+    date_fabrication: {
+        type: Sequelize.DATE,
+        allowNull: false
+    },
 
 });
 

@@ -5,11 +5,26 @@ import 'chart.js/auto';
 
 interface Achat {
     id: number;
-    date_achat: string; 
+    date_achat: Date;
+    user_id: number;
     prix: number;
-}
+    vehicule: {
+      id: number;
+      nom: string;
+      prix: number;
+        modele: {
+            id: number;
+            nom: string;
+            prix: number;
+        };
+      options: {
+        id: number;
+        nom: string;
+        prix: number;
+      }[];
+    };
+  }
 
-// Définition du type pour les données du graphique
 type ChartData = {
   labels: string[];
   datasets: Array<{
@@ -23,7 +38,6 @@ const AchatsParMoisChart: React.FC = () => {
     const [achats, setAchats] = useState<Achat[]>([]);
     const [chartData, setChartData] = useState<ChartData>();
 
-    // Charger les achats existants
     useEffect(() => {
         axios.get<Achat[]>('http://localhost:3000/api/achat', {
             headers: {
@@ -41,10 +55,9 @@ const AchatsParMoisChart: React.FC = () => {
         const achatParMois: { [key: string]: number } = {};
 
         // Traiter les achats pour obtenir le total par mois
-        console.log(achats)
         achats.forEach(achat => {
             const mois = new Date(achat.date_achat).toLocaleString('default', { month: 'short', year: 'numeric' });
-            achatParMois[mois] = (achatParMois[mois] || 0) + achat.prix;
+            achatParMois[mois] = (achatParMois[mois] || 0) + getTotals(achat);
         });
 
         // Créer les données pour le graphique en barres
@@ -59,6 +72,16 @@ const AchatsParMoisChart: React.FC = () => {
             ]
         });
     };
+
+const getTotals = (achats: any) => {        
+    let prix = achats.vehicule.modele.prix;
+        const achat = achats.vehicule;
+        for (let i = 0; i < achat.options.length; i++) {
+            const option = achat.options[i];
+            prix += option.prix;
+        }
+        return prix;
+}
 
     const options = {
         scales: {
