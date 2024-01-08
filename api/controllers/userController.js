@@ -113,13 +113,18 @@ exports.updateUserPassword = async (req, res) => {
         if (!user) {
             return res.status(404).json({ error: 'Utilisateur non trouvé' });
         }
-        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        const validPassword = await bcrypt.compare(req.body.oldPassword, user.password);
+        if (!validPassword) {
+            return res.status(400).json({ error: 'Ancien mot de passe incorrect' });
+        }
+        const hashedPassword = await bcrypt.hash(req.body.newPassword, 10);
         await user.update({ password: hashedPassword });
-        res.json(user);
+        res.json({ success: true, message: 'Mot de passe mis à jour avec succès' });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
-}
+};
+
 
 exports.deleteUser = async (req, res) => {
     try {

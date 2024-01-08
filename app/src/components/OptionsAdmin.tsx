@@ -4,13 +4,15 @@ import axios from "axios";
 interface Option {
   id: number;
   nom: string;
+  date_fabrication: string;
   prix: number;
 }
 
 const OptionsAdmin: React.FC = () => {
   const [options, setOptions] = useState<Option[]>([]);
-  const [newOption, setNewOption] = useState<{ nom: string; prix: number }>({
+  const [newOption, setNewOption] = useState<{ nom: string, date_fabrication: string, prix: number }>({
     nom: "",
+    date_fabrication: "",
     prix: 0,
   });
   const [selectedOption, setSelectedOption] = useState<Option | null>(null);
@@ -41,7 +43,7 @@ const OptionsAdmin: React.FC = () => {
       })
       .then((res) => {
         setOptions([...options, res.data]);
-        setNewOption({ nom: "", prix: 0 }); // Reset form
+        setNewOption({ nom: "", date_fabrication: "", prix: 0 });
       })
       .catch((err) => {
         console.error(err);
@@ -177,6 +179,15 @@ const OptionsAdmin: React.FC = () => {
           />
         </div>
         <div className="mb-3">
+          <label className="form-label">Date de fabrication: </label>
+          <input
+            type="date"
+            className="form-control"
+            value={newOption.date_fabrication}
+            onChange={(e) => handleChange("date_fabrication", e.target.value)}
+          />
+        </div>
+        <div className="mb-3">
           <label className="form-label">Prix: </label>
           <input
             type="number"
@@ -218,6 +229,13 @@ const OptionsAdmin: React.FC = () => {
                   value={selectedOption ? selectedOption.nom : ""}
                   onChange={(e) => handleChange("nom", e.target.value)}
                 />
+                <label className="form-label">Date de fabrication: </label>               
+                <input
+                  type="text"
+                  className="form-control"
+                  value={selectedOption ? selectedOption.date_fabrication : ""}
+                  onChange={(e) => handleChange("date_fabrication", e.target.value)}
+                />            
                 <label className="form-label">Prix: </label>
                 <input
                   type="number"

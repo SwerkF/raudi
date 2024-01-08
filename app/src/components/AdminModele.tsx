@@ -72,6 +72,7 @@ function AdminModele() {
     formData.append("vitesse_max", String(currentModele.vitesse_max));
     formData.append("couleur", String(currentModele.couleur));
     formData.append("moteur_id", String(currentModele.moteur_id));
+    formData.append("date_fabrication", currentModele.date_fabrication);
 
     if (currentModele.image) {
       formData.append("image", currentModele.image[0]);
@@ -125,6 +126,7 @@ function AdminModele() {
     formData.append("vitesse_max", String(submitModele.vitesse_max));
     formData.append("couleur", String(submitModele.couleur));
     formData.append("moteur_id", String(submitModele.moteur_id));
+    formData.append("date_fabrication", currentModele.date_fabrication);
     formData.append("image", submitModele.image[0]);
 
     // for each entries in formData, display key and value
@@ -173,7 +175,7 @@ function AdminModele() {
                       <td>{modele.id}</td>
                       <td>
                         {modele.image ? (
-                          <img src={modele.image} alt="Modèle" />
+                          <img src={"http://localhost:3000/src/"+modele.image} alt="Modèle" height={"50px"} />
                         ) : (
                           "Pas d'images"
                         )}
@@ -325,13 +327,26 @@ function AdminModele() {
                   ))}
               </select>
             </div>
-            <div className="col-12 mb-3">
+            <div className="col-6 mb-3">
               <label className="form-label">Image: </label>
               <input
                 type="file"
                 className="form-control"
                 onChange={(e) =>
                   setSubmitModele({ ...submitModele, image: e.target.files })
+                }
+              />
+            </div>
+            <div className="col-6 mb-3">
+              <label className="form-label">Date de fabrication: </label>
+              <input
+                type="date"
+                className="form-control"
+                onChange={(e) =>
+                  setSubmitModele({
+                    ...submitModele,
+                    date_fabrication: e.target.value,
+                  })
                 }
               />
             </div>
@@ -350,7 +365,7 @@ function AdminModele() {
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title" id="exampleModalLabel">
-                  Modal title
+                  Modifier Modele
                 </h5>
                 <button
                   type="button"
@@ -391,7 +406,7 @@ function AdminModele() {
                           }
                         />
                       </div>
-                      <div className="col-6 mb-3">
+                      <div className="col-12 mb-3">
                         <label className="form-label">
                           Description du modele:{" "}
                         </label>
@@ -510,6 +525,20 @@ function AdminModele() {
                           }
                         />
                       </div>
+                      <div className="col-6 mb-3">
+                        <label className="form-label">
+                          Date de fabrication:{" "}
+                        </label>
+                        <input
+                          type="date"
+                          className="form-control"
+                          onChange={(e) =>
+                            setCurrentModele({
+                              ...currentModele,
+                              date_fabrication: e.target.value,
+                            })
+                          }
+                        /></div>
                     </div>
                   </>
                 ) : (

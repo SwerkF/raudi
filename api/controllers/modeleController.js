@@ -5,7 +5,7 @@ const fs = require('fs');
 exports.createModele = async (req, res) => {
     try {
         // Extract other form fields from req.body
-        let { nom, prix, description, nombre_portes, nombre_places, taille, vitesse_max, couleur, moteur_id } = req.body;
+        let { nom, prix, description, nombre_portes, nombre_places, taille, vitesse_max, couleur, moteur_id, date_fabrication } = req.body;
 
         // Check if model exists in the database
         let moteur = await Moteur.findByPk(moteur_id);
@@ -37,6 +37,8 @@ exports.createModele = async (req, res) => {
             couleur: couleur,
             moteur_id: moteur_id,
             image: imageName, 
+            date_fabrication: date_fabrication,
+
         });
 
         

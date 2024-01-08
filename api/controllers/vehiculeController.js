@@ -1,4 +1,4 @@
-const Vehicule = require('../models/vehicule'); // Assurez-vous que le chemin est correct
+const Vehicule = require('../models/vehicule'); 
 
 exports.createVehicule = async (req, res) => {
     try {

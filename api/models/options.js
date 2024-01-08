@@ -16,6 +16,10 @@ const Options = sequelize.define('options', {
         type: Sequelize.INTEGER,
         allowNull: false
     },
+    date_fabrication: {
+        type: Sequelize.DATE,
+        allowNull: false
+    },
 });
 
 module.exports = Options;
