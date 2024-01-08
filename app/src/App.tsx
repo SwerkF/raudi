@@ -8,7 +8,7 @@ import Home from './pages/Home'
 import Modele from './pages/Modele'
 import ModeleDetail from './pages/ModeleDetail'
 import Admin from './pages/Admin'
-
+import Contact from './pages/Contact';
 import Profile from './pages/Profile';
 
 function App() {
@@ -26,6 +26,8 @@ function App() {
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/profile/:id" element={<Profile />} />
           <Route path="/profile/:id" element={<Profile />} />
+          <Route path="/contact" element={<Contact />} />
+    
         </Routes>
       </Router>
     </>

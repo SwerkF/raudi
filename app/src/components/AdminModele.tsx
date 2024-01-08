@@ -173,7 +173,7 @@ function AdminModele() {
                       <td>{modele.id}</td>
                       <td>
                         {modele.image ? (
-                          <img src={modele.image} alt="Modèle" />
+                          <img src={"http://localhost:3000/src/"+modele.image} alt="Modèle" height={"50px"} />
                         ) : (
                           "Pas d'images"
                         )}

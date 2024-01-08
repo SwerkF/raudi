@@ -1,0 +1,11 @@
+.bg-dark {
+    background-color: #101010!important;
+}
+
+.nav-link {
+    color: #fff!important;
+}
+
+.active {
+    border-bottom: 2px solid #fff;
+}

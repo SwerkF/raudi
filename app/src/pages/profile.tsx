@@ -29,7 +29,7 @@ const Profile: React.FC = () => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       })
-      .then((res) => {
+      .then((res:any) => {
         console.log(res.data.user);
         setUser(res.data.user);
       })
@@ -103,6 +103,7 @@ const Profile: React.FC = () => {
                 <div className="d-flex justify-content-between align-items-center mb-3">
                     <h4 className="text-right">Paramètres du profil</h4>
                 </div>
+                <h5 className="text-left">Informations personnelles</h5>
                 <div className="row mt-2">
                     <div className="col-md-6">
                         <label className="labels">Nom</label>
@@ -115,33 +116,39 @@ const Profile: React.FC = () => {
                                onChange={(e)=> handleChange('prenom', e.target.value)}/>
                     </div>
                 </div>
+
                 <div className="row mt-3">
-                    <div className="col-md-12">
-                        <label className="labels">Téléphone</label>
-                        <input type="text" className="form-control" placeholder="Entrez numéro de téléphone" 
-                               value={user.telephone || ''} 
-                               onChange={(e)=> handleChange('telephone', e.target.value)}/>
-                    </div>
+                  <h5 className="text-left">Téléphone</h5>
+                  <div className="col-md-12">
+                      <label className="labels">Téléphone</label>
+                      <input type="text" className="form-control" placeholder="Entrez numéro de téléphone" 
+                              value={user.telephone || ''} 
+                              onChange={(e)=> handleChange('telephone', e.target.value)}/>
+                  </div>
                 </div>
+                <h5 className="text-left mt-3">Adresse</h5>
                 <div className="row mt-3">
                     <div className="col-md-12 mb-2">
+                        <label className="labels">Adresse</label>
                         <input type="text" className="form-control" placeholder="Entrez adresse" 
                                value={user.adresse || ''} 
                                onChange={(e)=> handleChange('adresse', e.target.value)}/>
                     </div>
                     <div className="col-md-6 mb-2">
+                        <label className="labels">Code postal</label>
                         <input type="text" className="form-control" placeholder="Entrez code postal" 
                                value={user.code_postal || ''} 
                                onChange={(e)=> handleChange('code_postal', e.target.value)}/>
                     </div>
                     <div className="col-md-6">
+                        <label className="labels">Ville</label>
                         <input type="text" className="form-control" placeholder="Entrez ville" 
                                value={user.ville || ''} 
                                onChange={(e)=> handleChange('ville', e.target.value)}/>
                     </div>
                 </div>
                 <div className="mt-5 text-center">
-                    <button className="btn btn-primary profile-button" type="submit">Enregistrer le profil</button>
+                    <button className="btn btn-primary profile-button w-100" type="submit">Enregistrer le profil</button>
                 </div>
             </div>
         </div>
@@ -167,7 +174,7 @@ const Profile: React.FC = () => {
                                onChange={(e)=> handleChange('confirmNewPassword', e.target.value)}/>
                     </div>
                     <div className="mt-5 text-center">
-                        <button className="btn btn-primary" type="submit">Changer le mot de passe</button>
+                        <button className="btn btn-primary w-100" type="submit" >Changer le mot de passe</button>
                     </div>
                 </form>
             </div>

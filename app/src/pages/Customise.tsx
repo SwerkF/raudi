@@ -91,7 +91,7 @@ function Customise() {
                 return "#0000FF";
                 break;
             default:
-                return "#000000";
+                return "#f9f9f9";
                 break;
         }
     }
@@ -133,65 +133,81 @@ function Customise() {
                             <h1>Cutomisation de {modele.nom}</h1>
                             <div className="row">
                                 <div className="col-9">
-                                    <h5>1. Votre modele</h5>
-                                    <div className="d-flex justif-content-start">
-                                        <div className="image" style={{paddingRight: "30px"}}>
-                                            <img src={'http://localhost:3000/src/'+modele.image} width={'100px'} alt={modele.image} />
-                                        </div>
-                                        <div className="d-flex flex-column justify-content-center">
-                                            <p className="fw-bold mb-0">Modele {modele.nom}</p>
-                                            <p className="mb-0">{modele.prix} € - {modele.vitesse_max} km/h - <span style={{width: "20px", height: "20px", borderRadius: "50%", backgroundColor: handleGetColor(modele.couleur), display: "inline-block"}}></span> {modele.couleur}
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <hr/>
-                                    <h5 className="mt-4">2. Choisissez vos options</h5>
-                                    <div className="row">
-                                        {
-                                            options && options.map((option: any) => {
-                                                return (
-                                                    // checkboxes no cards
-                                                    <div key={option.id} className="col-3 d-flex flex-row align-items-center">
-                                                        <input type="checkbox" name={option.nom} value={option.nom} onChange={() => handleOption(option)} />
-                                                        <label htmlFor={option.nom}>{option.nom} - {option.prix} €</label>
-                                                    </div>
-                                                )
-                                            })
-                                        }
-                                    </div>
-                                    <hr/>
-                                    <h5 className="mt-4">3. Vos informations</h5>
-                                    <div className="row">
-                                        <div className="col-6">
-                                            <div className="form-group">
-                                                <label htmlFor="adresse">Adresse</label>
-                                                <input type="text" className="form-control" name="adresse" id="adresse" value={adresse} onChange={(e) => setAdresse(e.target.value)} />
-                                            </div>
-                                        </div>
-                                        <div className="col-6">
-                                            <div className="form-group">
-                                                <label htmlFor="cp">Code postal</label>
-                                                <input type="text" className="form-control" name="cp" id="cp" value={cp} onChange={(e) => setCp(e.target.value)} />
-                                            </div>
-                                        </div>
-                                        <div className="col-6">
-                                            <div className="form-group">
-                                                <label htmlFor="ville">Ville</label>
-                                                <input type="text" className="form-control" name="ville" id="ville" value={ville} onChange={(e) => setVille(e.target.value)} />
-                                            </div>
-                                        </div>
-                                        <div className="col-6">
-                                            <div className="form-group">
-                                                <label htmlFor="tel">Téléphone</label>
-                                                <input type="text" className="form-control" name="tel" id="tel" value={tel} onChange={(e) => setTel(e.target.value)} />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr/>
-                                    <h5 className="mt-4">4. Paiement</h5>
                                     <div className="card">
                                         <div className="card-header">
-                                            <p>Carte bancaire</p>
+                                            <h5>1. Votre modele</h5>
+                                        </div>
+                                        <div className="card-body">
+                                            <div className="d-flex flex-row align-items-center"> 
+                                            <img src={"http://localhost:3000/src/"+modele.image} alt={modele.nom} height={"100px"}/>
+                                                <p className="mb-0 m-2">Prix: <span className="fw-bold">{modele.prix} €</span> 
+                                                    - Vitesse max: <span className="fw-bold">{modele.vitesse_max}</span> km/h 
+                                                    - Couleur: <span style={{width: "20px", height: "20px", borderRadius: "50%", backgroundColor: handleGetColor(modele.couleur), display: "inline-block"}}></span> <span className="fw-bold">{modele.couleur}</span>
+                                                    - Nombre de portes: <span className="fw-bold">{modele.nombre_portes}</span>
+                                                    - Nombre de places: <span className="fw-bold">{modele.nombre_places}</span>
+                                                    - Type de moteur: <span className="fw-bold">{modele.moteur.type}</span>
+
+                                                </p>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr/>
+                                    <div className="card">
+                                        <div className="card-header">
+                                            <h5 className="card-title">2. Choisissez vos options</h5>
+                                        </div>
+                                        <div className="card-body">
+                                            <div className="row">
+                                            {
+                                                options && options.map((option: any) => {
+                                                    return (
+                                                        // checkboxes no cards
+                                                        <div key={option.id} className="col-3 d-flex flex-row align-items-center">
+                                                            <input type="checkbox" name={option.nom} value={option.nom} onChange={() => handleOption(option)} />
+                                                            <label htmlFor={option.nom}>{option.nom} - {option.prix} €</label>
+                                                        </div>
+                                                    )
+                                                })
+                                            }
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <hr/>
+                                    <div className="card">
+                                        <div className="card-header">
+                                            <h5 className="card-title">3. Adresse de livraison</h5>
+                                        </div>
+                                        <div className="card-body">
+                                            <div className="form-group">
+                                                <label htmlFor="adresse">Adresse</label>
+                                                <input type="text" className="form-control" name="adresse" id="adresse" onChange={(e) => setAdresse(e.target.value)} />
+                                            </div>
+                                            <div className="row">
+                                                <div className="col">
+                                                    <div className="form-group">
+                                                        <label htmlFor="ville">Ville</label>
+                                                        <input type="text" className="form-control" name="ville" id="ville" onChange={(e) => setVille(e.target.value)} />
+                                                    </div>
+                                                </div>
+                                                <div className="col">
+                                                    <div className="form-group">
+                                                        <label htmlFor="cp">Code postal</label>
+                                                        <input type="text" className="form-control" name="cp" id="cp" onChange={(e) => setCp(e.target.value)} />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="form-group">
+                                                <label htmlFor="tel">Téléphone</label>
+                                                <input type="text" className="form-control" name="tel" id="tel" onChange={(e) => setTel(e.target.value)} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr/>
+                                    <div className="card">
+                                        <div className="card-header">
+                                            <h5 className="card-title">4. Paiement</h5>
                                         </div>
                                         <div className="card-body">
                                             <div className="form-group">

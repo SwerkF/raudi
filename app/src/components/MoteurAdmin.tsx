@@ -121,7 +121,7 @@ const MoteursAdmin: React.FC = () => {
             <th>Type</th>
             <th>Puissance (CV)</th>
             <th>Edite</th>
-            <th>Supprime</th>
+            <th>Supprimer</th>
           </tr>
         </thead>
         <tbody>
