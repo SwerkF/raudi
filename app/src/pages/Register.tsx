@@ -17,7 +17,7 @@ function Register() {
           })
               .then((response) => {
                   if(response.status === 200) {
-                      navigate("/");
+                    window.location.href = "/";
                   } else {
                       localStorage.removeItem("token");
                   }
