@@ -22,8 +22,9 @@ function Login() {
                         localStorage.removeItem("token");
                     }
                 })
-                .catch((err) => {
+                .catch((err:any) => {
                     localStorage.removeItem("token");
+                    console.log(err)
                 })
                 
         }

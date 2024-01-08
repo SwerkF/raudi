@@ -20,14 +20,12 @@ app.use(bodyParser.json());
 // Configure multer for file uploads
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'src/'); // Specify the destination folder
+        cb(null, 'src/');
     },
     filename: function (req, file, cb) {
-        // rename the file to be the name of the model with the extension which is in the ..src/ folder
         const extension = file.originalname.split('.')[1];
         const newImageName = `${req.body.nom}.${extension}`;
         cb(null, newImageName);
-
     },
 });
 

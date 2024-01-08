@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 interface Achat {
     id: number;
@@ -24,8 +25,11 @@ interface Achat {
   }
 
 const AchatsUtilisateurs: React.FC = () => {
+  
+  const navigate = useNavigate();
   const [achats, setAchats] = useState<Achat[]>([]);
   const [mois, setMois] = useState<string>('');
+
   useEffect(() => {
     let isMounted = true; 
     axios.get<Achat[]>('http://localhost:3000/api/achat', {
@@ -40,6 +44,7 @@ const AchatsUtilisateurs: React.FC = () => {
       })
       .catch(err => {
         console.error('Une erreur est survenue lors de la récupération des achats: ', err);
+        navigate('/login');
       });
   
     return () => {
@@ -90,59 +95,57 @@ const getOptions = (achats: any) => {
 console.log(achats);
 
   return (
-<div className="container">
-  <div className="d-flex align-items-center p-3 my-3  rounded shadow-sm">
-    <div className="lh-1 d-flex">
-      <h1 className="h6 mb-0 w-100">Filtre des achats (Mois)</h1>
-      <input 
-            className="form-control ms-5" 
-          type="month" 
-          value={mois} 
-          onChange={(e) => setMois(e.target.value)} 
-        />
-    </div>
-  </div>
-
-
-<table className="table">
-  <thead>
-    <tr>
-      <th scope="col">Numéro</th>
-      <th scope="col">Date achat</th>
-      <th scope="col">Modele</th>
-      <th scope="col">Prix Modele</th>
-      <th scope="col">Options</th>
-      <th scope="col">Total</th>
-    </tr>
-  </thead>
-  <tbody>
-  {achatsFiltres.map(achat => (
-
-    <tr key={achat.id}>
-      <th> {achat.id}</th>
-      <td>{dateFormat(achat.date_achat)}</td>
-      <td>{achat.vehicule.modele.nom}</td>
-      <td>{achat.vehicule.modele.prix}</td>
-
-      <td>
-  {
-    getOptions(achat).length > 0 ?
-    getOptions(achat).map((opt, index) => (
-      <div key={index}>
-        {opt.optionNom} - {opt.optionPrix} €
+    <div className="container">
+      <div className="d-flex align-items-center p-3 my-3  rounded shadow-sm">
+        <div className="lh-1 d-flex">
+          <h1 className="h6 mb-0 w-100">Filtre des achats (Mois)</h1>
+          <input 
+                className="form-control ms-5" 
+              type="month" 
+              value={mois} 
+              onChange={(e) => setMois(e.target.value)} 
+            />
+        </div>
       </div>
-    )) :
-    <div>Pas d'options</div>
-  }
-</td>
-<td>{getTotals(achat)} €</td>
-    </tr>
-    ))}
-  </tbody>
-</table>
+      <table className="table">
+        <thead>
+          <tr>
+            <th scope="col">Numéro</th>
+            <th scope="col">Date achat</th>
+            <th scope="col">Modele</th>
+            <th scope="col">Prix Modele</th>
+            <th scope="col">Options</th>
+            <th scope="col">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+        {achatsFiltres.map(achat => (
+
+          <tr key={achat.id}>
+            <th> {achat.id}</th>
+            <td>{dateFormat(achat.date_achat)}</td>
+            <td>{achat.vehicule.modele.nom}</td>
+            <td>{achat.vehicule.modele.prix}</td>
+
+            <td>
+        {
+          getOptions(achat).length > 0 ?
+          getOptions(achat).map((opt, index) => (
+            <div key={index}>
+              {opt.optionNom} - {opt.optionPrix} €
+            </div>
+          )) :
+          <div>Pas d'options</div>
+        }
+      </td>
+      <td>{getTotals(achat)} €</td>
+          </tr>
+          ))}
+        </tbody>
+      </table>
 
 
-</div>
+    </div>
 
 
   );
