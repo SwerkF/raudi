@@ -76,6 +76,7 @@ http://localhost:3000/api/database
 http://localhost:3000/api/database/fill
 ```
 
+Créez un fichier `./src` à la racine de `./api` pour la gestion des images.
 
 ## Features
 
