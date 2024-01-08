@@ -124,15 +124,16 @@ const OptionsAdmin: React.FC = () => {
 
 
   return (
-    <div className="container mt-4">
-      <h1>Options de Véhicules</h1>
-      <table className="table text-center">
-        <thead>
+    <>    <div className="container mt-4 d-flex">
+      <table className="table text-center w-75">
+      <caption>Liste des options</caption>
+          <thead>
           <tr>
             <th>ID</th>
             <th>Nom</th>
             <th>Prix (€)</th>
-            <th>Action</th>
+            <th>Edit</th>
+            <th>Suppime</th>
           </tr>
         </thead>
         <tbody>
@@ -141,13 +142,8 @@ const OptionsAdmin: React.FC = () => {
               <td>{option.id}</td>
               <td>{option.nom}</td>
               <td>{option.prix}</td>
-              <td>
-                <button
-                  className="btn btn-danger me-2"
-                  onClick={() => handleDelete(option.id)}
-                >
-                  Supprimer
-                </button>
+              <td style={{width:"5%"}}>
+               
                 <button
                   type="button"
                   className="btn btn-primary"
@@ -155,7 +151,14 @@ const OptionsAdmin: React.FC = () => {
                   data-bs-toggle="modal"
                   data-bs-target="#exampleModal"
                 >
-                  Modifier
+<i className="bi bi-pencil-square"></i>                </button>
+              </td>
+              <td style={{width:"5%"}}>  
+              <button
+                  className="btn btn-danger me-2"
+                  onClick={() => handleDelete(option.id)}
+                >
+                  <i className="bi bi-trash3"></i>                
                 </button>
               </td>
             </tr>
@@ -163,7 +166,7 @@ const OptionsAdmin: React.FC = () => {
         </tbody>
       </table>
 
-      <form onSubmit={handleSubmit} className="mt-3">
+      <form onSubmit={handleSubmit} className="mt-3 ms-auto">
         <div className="mb-3">
           <label className="form-label">Nom de l'option: </label>
           <input
@@ -244,6 +247,7 @@ const OptionsAdmin: React.FC = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
