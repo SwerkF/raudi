@@ -29,9 +29,7 @@ function Nav() {
                     localStorage.removeItem("token");
                 })
                 
-        } else {
-            navigate("/login");
-        }
+        } 
     }, []);
 
     const handleRedirect = (menu: string) => {
@@ -47,7 +45,7 @@ function Nav() {
         <>
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
                 <div className="container-fluid">
-                    <a className="navbar-brand" href="/">Car Configurator</a>
+                    <a className="navbar-brand" href="/">RAUDI</a>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" 
                         aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
@@ -59,7 +57,7 @@ function Nav() {
                                 <a className="nav-link" aria-current="page" href="/">Accueil</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="/modeles">Modeles</a>
+                                <a className="nav-link" href="/modele">Modeles</a>
                             </li>
                         </ul>
                         <ul className="navbar-nav ms-auto">

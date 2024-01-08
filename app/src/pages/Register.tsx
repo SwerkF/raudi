@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -7,11 +7,34 @@ function Register() {
     const navigate = useNavigate();
     const [data, setData] = useState<any>([]); 
 
+    useEffect(() => {
+      const token = localStorage.getItem("token");
+      if(token) {
+          axios.get("http://localhost:3000/api/user/me", {
+              headers: {
+                  Authorization: `Bearer ${token}`
+              }
+          })
+              .then((response) => {
+                  if(response.status === 200) {
+                      navigate("/");
+                  } else {
+                      localStorage.removeItem("token");
+                  }
+              })
+              .catch((err:any) => {
+                  localStorage.removeItem("token");
+                  console.log(err)
+              })
+              
+      }
+  }, []);
 
    const handleChange = (champ: any, event: any) => {
         setData({ ...data, [champ]: event.target.value });
     }
-    const handleSubmit = (event: React.FormEvent) => {
+
+    const handleSubmit = (event: any) => {
         event.preventDefault();
         console.log(data);
         axios.post("http://localhost:3000/api/user/register", data)

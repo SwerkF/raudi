@@ -55,7 +55,7 @@ const ModelesList = () => {
                 {modelesFiltres.map(modele => (
                     <div className="col-md-4 mb-4" key={modele.id}>
                         <div className="card h-100">
-                            <img src={modele.image} alt={modele.nom} className="card-img-top" />
+                            <img src={"http://localhost:3000/src/"+modele.image} alt={modele.nom} className="card-img-top" />
                             <div className="card-body d-flex flex-column">
                                 <h5 className="card-title">{modele.nom}</h5>
                                 <p className="card-text">{modele.description}</p>

@@ -147,8 +147,7 @@ function AdminModele() {
           };
         
         return (
-            <>
-                // show all modele, create a modal to edit 
+            <> 
                 <div className="container mt-4">
                     <h1>Modele</h1>
                     <div className="row">
